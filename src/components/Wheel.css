@@ -10,9 +10,7 @@
   grid-template-columns: repeat(1, 190px);
   gap: 8px;
   padding: 12px;
-  border: 2px solid #444;
-  border-radius: 12px;
-  background: #f5f5f5;
+  background: black;
 }
 
 .wheel-item {
@@ -20,14 +18,17 @@
   align-items: center;
   justify-content: center;
   height: 48px;
-  border-radius: 8px;
-  background: #e0e0e0;
+  border-radius: 0px;
+  background: black;
+  border: 2px solid #b9b9b9;
+  color: #b9b9b9;
   font-weight: 600;
   transition: transform 0.15s ease, background 0.15s ease;
 }
 
 .wheel-item.selected {
-  background: #ffcc00;
+  background: #b9b9b9;
+  color: #000;
   transform: scale(1.05);
   box-shadow: 0 0 0 2px #222;
 }

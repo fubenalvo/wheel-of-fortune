@@ -36,7 +36,7 @@ function GameBoard() {
       <div className="side-column">
         <Wheel
           onSpinResult={handleSpin}
-          disabled={gamePhase !== "spinning"}
+          disabled={gamePhase !== "spinning" || currentPlayer.computer}
           lastResult={lastSpinResult}
         />
 
@@ -57,9 +57,9 @@ function GameBoard() {
           onLetterClick={guessLetter}
           usedLetters={guessedLetters}
 
-          // Disable keyboard until the wheel has been spun
+          // Disable keyboard until the wheel has been spun or if the computer is playing
           disabled={
-            gamePhase !== "guessing"
+            gamePhase !== "guessing" || currentPlayer.computer
           }
         />
       )}

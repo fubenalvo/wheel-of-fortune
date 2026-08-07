@@ -1,11 +1,12 @@
 
 .game-board {
   display: flex;
-  
+  background-color: black;
+  padding: 5px;
   align-items: center;
   justify-content: center;
   gap: 16px;
-  margin-top: 24px;
+  margin-top: 50px;
 
   .side-column {
     width: 200px;

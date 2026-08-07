@@ -7,6 +7,18 @@ import {
   isPuzzleSolved
 } from "./gameLogic";
 
+const COMPUTER_BASE_HIT_CHANCE = 0.25;
+const COMPUTER_DIFFICULTY_BONUS = 0.05;
+const COMPUTER_THINK_DELAY_MS = 1000;
+const COMPUTER_LETTERS = [
+  "A","Á","B","C","D","E","É",
+  "F","G","H","I","Í","J",
+  "K","L","M","N","O","Ó",
+  "Ö","Ő","P","Q","R","S",
+  "T","U","Ú","Ü","Ű",
+  "V","W","X","Y","Z"
+];
+
 
 type GamePhase =
   | "spinning"
@@ -24,16 +36,22 @@ export function useGame() {
       id: 1,
       name: "Khaaaan",
       score: 0,
+      computer: false,
+      difficulty: 1,
     },
-        {
+    {
       id: 2,
       name: "Gipsz Jakab",
       score: 0,
+      computer: false,
+      difficulty: 1,
     },
-        {
+    {
       id: 3,
-      name: "James T. Krik",
+      name: "Robo Játékos",
       score: 0,
+      computer: true,
+      difficulty: 1,
     },
   ]);
 
@@ -68,13 +86,17 @@ export function useGame() {
 
 
   const puzzle = puzzleData.text;
-
   const category = puzzleData.category;
+
+  const aiTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
     return () => {
       if (turnTimerRef.current !== null) {
         window.clearTimeout(turnTimerRef.current);
+      }
+      if (aiTimerRef.current !== null) {
+        window.clearTimeout(aiTimerRef.current);
       }
     };
   }, []);
@@ -97,6 +119,118 @@ export function useGame() {
     }, 3000);
   }
 
+  function getComputerHitChance(difficulty: number) {
+    return Math.min(
+      1,
+      COMPUTER_BASE_HIT_CHANCE + difficulty * COMPUTER_DIFFICULTY_BONUS
+    );
+  }
+
+  function getUnusedLetters() {
+    return COMPUTER_LETTERS.filter(
+      letter => !guessedLetters.includes(letter)
+    );
+  }
+
+  function getMissingLetters() {
+    return Array.from(
+      new Set(
+        puzzle
+          .split("")
+          .filter(letter => letter !== " " && !guessedLetters.includes(letter))
+      )
+    );
+  }
+
+  function getIncorrectUnusedLetters() {
+    return getUnusedLetters().filter(letter => !puzzle.includes(letter));
+  }
+
+  function chooseComputerLetter() {
+    const missingLetters = getMissingLetters();
+    if (missingLetters.length === 0) {
+      return null;
+    }
+
+    const hitProbability = getComputerHitChance(currentPlayer.difficulty);
+    const shouldHit = Math.random() < hitProbability;
+
+    if (shouldHit) {
+      return missingLetters[
+        Math.floor(Math.random() * missingLetters.length)
+      ];
+    }
+
+    const incorrectLetters = getIncorrectUnusedLetters();
+    if (incorrectLetters.length > 0) {
+      return incorrectLetters[
+        Math.floor(Math.random() * incorrectLetters.length)
+      ];
+    }
+
+    const unusedLetters = getUnusedLetters();
+    return unusedLetters.length > 0
+      ? unusedLetters[Math.floor(Math.random() * unusedLetters.length)]
+      : null;
+  }
+
+  function getRandomWheelResult() {
+    const results: Array<{
+      type: "money" | "bankrupt" | "halve" | "double";
+      value?: number;
+    }> = [
+      { type: "bankrupt" },
+      { type: "money", value: 5000 },
+      { type: "money", value: 1000 },
+      { type: "money", value: 500 },
+      { type: "money", value: 300 },
+      { type: "money", value: 250 },
+      { type: "money", value: 200 },
+      { type: "money", value: 150 },
+      { type: "money", value: 100 },
+      { type: "money", value: 50 },
+      { type: "money", value: 10 },
+      { type: "halve" },
+      { type: "double" },
+    ];
+
+    return results[Math.floor(Math.random() * results.length)];
+  }
+
+  useEffect(() => {
+    if (!currentPlayer.computer) {
+      return;
+    }
+
+    if (aiTimerRef.current !== null) {
+      window.clearTimeout(aiTimerRef.current);
+      aiTimerRef.current = null;
+    }
+
+    if (gamePhase === "spinning") {
+      aiTimerRef.current = window.setTimeout(() => {
+        aiTimerRef.current = null;
+        handleSpin(getRandomWheelResult());
+      }, COMPUTER_THINK_DELAY_MS);
+    }
+
+    if (gamePhase === "guessing") {
+      aiTimerRef.current = window.setTimeout(() => {
+        aiTimerRef.current = null;
+        const letter = chooseComputerLetter();
+        if (letter) {
+          guessLetter(letter);
+        }
+      }, COMPUTER_THINK_DELAY_MS);
+    }
+
+    return () => {
+      if (aiTimerRef.current !== null) {
+        window.clearTimeout(aiTimerRef.current);
+        aiTimerRef.current = null;
+      }
+    };
+  }, [currentPlayer.computer, currentPlayer.difficulty, gamePhase, guessedLetters]);
 
   /*
     Called after the wheel stops spinning.
@@ -265,16 +399,22 @@ export function useGame() {
         id: 1,
         name: "Khaaaan",
         score: 0,
+        computer: false,
+        difficulty: 1,
       },
       {
         id: 2,
         name: "Gipsz Jakab",
         score: 0,
+        computer: false,
+        difficulty: 1,
       },
       {
         id: 3,
-        name: "James T. Krik",
+        name: "Robo Játékos",
         score: 0,
+        computer: true,
+        difficulty: 1,
       },
     ]);
     if (turnTimerRef.current !== null) {

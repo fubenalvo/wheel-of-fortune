@@ -78,7 +78,6 @@ function Wheel({ onSpinResult, disabled, lastResult }: WheelProps) {
 
   return (
     <div className="wheel-container">
-      <h2>🎡 Kerék</h2>
 
       <div className="wheel">
         {wheelValues.map((item, index) => {
