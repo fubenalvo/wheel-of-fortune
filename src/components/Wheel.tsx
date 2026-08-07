@@ -61,7 +61,10 @@ function Wheel({ onSpinResult, disabled, lastResult }: WheelProps) {
       step += 1;
 
       if (step < steps) {
-        const delay = Math.max(50, 70 + step * 8 / 2);
+        const delay = Math.max(
+          40,
+          55 + step * 3.5 + (step === steps - 1 ? 100 : 0)
+        );
         animationRef.current = window.setTimeout(tick, delay);
         return;
       }

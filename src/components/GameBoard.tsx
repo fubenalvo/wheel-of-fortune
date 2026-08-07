@@ -29,11 +29,11 @@ function GameBoard() {
   }
 
   return (
-    <div>
-      <h1>Wheel of Fortune</h1>
+    <div className="game-board">
+      
 
 
-      <div className="main-column column-left">
+      <div className="side-column">
         <Wheel
           onSpinResult={handleSpin}
           disabled={gamePhase !== "spinning"}
@@ -41,7 +41,8 @@ function GameBoard() {
         />
 
       </div>
-
+      <div className="main-column">
+        <h1>Wheel of Fortune</h1>
       <p>
         Category: {category}
       </p>
@@ -109,7 +110,10 @@ function GameBoard() {
           <button onClick={restartGame}>Új játék</button>
         </div>
       )}
+      </div>
+      <div className="side-column">
 
+      </div>
     </div>
   );
 }
