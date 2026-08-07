@@ -1,40 +1,106 @@
+import { useEffect, useRef, useState } from "react";
+import "./Wheel.css";
+
+type WheelResult = { type: "money" | "bankrupt" | "halve" | "double"; value?: number };
+
 type WheelProps = {
-  onSpinResult: (value: number) => void;
+  onSpinResult: (result: WheelResult) => void;
+  disabled: boolean;
+  lastResult?: WheelResult | null;
 };
 
 
 const wheelValues = [
-  100,
-  200,
-  300,
-  500,
-  1000,
-  2000,
-  0
+  { type: "bankrupt" as const },
+  { type: "money" as const, value: 5000 },
+  { type: "money" as const, value: 1000 },
+  { type: "money" as const, value: 500 },
+  { type: "money" as const, value: 300 },
+  { type: "money" as const, value: 250 },
+  { type: "money" as const, value: 200 },
+  { type: "money" as const, value: 150 },
+  { type: "money" as const, value: 100 },
+  { type: "money" as const, value: 50 },
+  { type: "money" as const, value: 10 },
+  { type: "halve" as const },
+  { type: "double" as const },
 ];
 
 
-function Wheel({ onSpinResult }: WheelProps) {
+function Wheel({ onSpinResult, disabled, lastResult }: WheelProps) {
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [isSpinning, setIsSpinning] = useState(false);
+  const animationRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (animationRef.current !== null) {
+        window.clearTimeout(animationRef.current);
+      }
+    };
+  }, []);
 
   function spinWheel() {
+    if (disabled || isSpinning) {
+      return;
+    }
 
-    const randomIndex = Math.floor(
-      Math.random() * wheelValues.length
-    );
+    setIsSpinning(true);
 
-    const result = wheelValues[randomIndex];
+    const finalIndex = Math.floor(Math.random() * wheelValues.length);
+    const fullLoops = 3 + Math.floor(Math.random() * 3);
+    const offset = (finalIndex - selectedIndex + wheelValues.length) % wheelValues.length;
+    const steps = fullLoops * wheelValues.length + offset;
 
-    onSpinResult(result);
+    let currentIndex = selectedIndex;
+    let step = 0;
+
+    const tick = () => {
+      currentIndex = (currentIndex + 1) % wheelValues.length;
+      setSelectedIndex(currentIndex);
+      step += 1;
+
+      if (step < steps) {
+        const delay = Math.max(50, 70 + step * 8 / 2);
+        animationRef.current = window.setTimeout(tick, delay);
+        return;
+      }
+
+      setIsSpinning(false);
+      onSpinResult(wheelValues[finalIndex]);
+    };
+
+    tick();
   }
 
-
   return (
-    <div>
+    <div className="wheel-container">
       <h2>🎡 Kerék</h2>
 
-      <button onClick={spinWheel}>
-        Pörgetés
+      <div className="wheel">
+        {wheelValues.map((item, index) => {
+          const label = item.type === "money" ? `${item.value}` : item.type;
+
+          return (
+            <div
+              key={`${item.type}-${index}`}
+              className={`wheel-item ${selectedIndex === index ? "selected" : ""}`}
+            >
+              {label}
+            </div>
+          );
+        })}
+      </div>
+
+      <button onClick={spinWheel} disabled={disabled || isSpinning}>
+        {isSpinning ? "Pörgetés..." : "Pörgetés"}
       </button>
+
+      {lastResult && (
+        <p>
+          Utolsó kerék: {lastResult.type === "money" ? `${lastResult.value}` : lastResult.type}
+        </p>
+      )}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Player } from "../models/Player";
 
 import {
@@ -11,6 +11,7 @@ import {
 type GamePhase =
   | "spinning"
   | "guessing"
+  | "waiting"
   | "gameOver"
   | "won";
 
@@ -40,6 +41,8 @@ export function useGame() {
   const [currentPlayerIndex, setCurrentPlayerIndex] =
     useState(0);
 
+  const turnTimerRef = useRef<number | null>(null);
+
 
   const currentPlayer =
     players[currentPlayerIndex];
@@ -51,6 +54,9 @@ export function useGame() {
 
   const [currentSpinValue, setCurrentSpinValue] =
     useState(0);
+
+  const [lastSpinResult, setLastSpinResult] =
+    useState<{ type: "money" | "bankrupt" | "halve" | "double"; value?: number } | null>(null);
 
 
   const [gamePhase, setGamePhase] =
@@ -65,17 +71,77 @@ export function useGame() {
 
   const category = puzzleData.category;
 
+  useEffect(() => {
+    return () => {
+      if (turnTimerRef.current !== null) {
+        window.clearTimeout(turnTimerRef.current);
+      }
+    };
+  }, []);
+
+  function scheduleNextTurn() {
+    if (turnTimerRef.current !== null) {
+      window.clearTimeout(turnTimerRef.current);
+    }
+
+    setGamePhase("waiting");
+
+    turnTimerRef.current = window.setTimeout(() => {
+      turnTimerRef.current = null;
+      setCurrentPlayerIndex(previousIndex =>
+        (previousIndex + 1) % players.length
+      );
+      setCurrentSpinValue(0);
+      setLastSpinResult(null);
+      setGamePhase("spinning");
+    }, 3000);
+  }
+
 
   /*
     Called after the wheel stops spinning.
     The result becomes the value of the next letter guess.
   */
-  function handleSpin(value: number) {
+  function handleSpin(result: { type: "money" | "bankrupt" | "halve" | "double"; value?: number }) {
+    setLastSpinResult(result);
 
-    setCurrentSpinValue(value);
+    if (result.type === "money") {
+      setCurrentSpinValue(result.value ?? 0);
+      setGamePhase("guessing");
+      return;
+    }
 
-    // Allow the player to choose a letter
-    setGamePhase("guessing");
+    if (result.type === "double") {
+      setGamePhase("guessing");
+      return;
+    }
+
+    setPlayers(previousPlayers =>
+      previousPlayers.map((player, index) => {
+        if (index !== currentPlayerIndex) {
+          return player;
+        }
+
+        if (result.type === "bankrupt") {
+          return {
+            ...player,
+            score: 0,
+          };
+        }
+
+        if (result.type === "halve") {
+          return {
+            ...player,
+            score: Math.floor(player.score / 2),
+          };
+        }
+
+        return player;
+      })
+    );
+
+    setCurrentSpinValue(0);
+    scheduleNextTurn();
   }
 
 
@@ -90,34 +156,30 @@ export function useGame() {
     - Is the puzzle solved?
   */
   function guessLetter(letter: string) {
-    if (gamePhase === "won") {
+    if (gamePhase !== "guessing") {
       return;
     }
 
-    // Prevent selecting the same letter twice
     if (guessedLetters.includes(letter)) {
       return;
     }
 
-
-    // Count how many times the letter appears
-    const amount = countLetter(
-      puzzle,
-      letter
-    );
-
+    const amount = countLetter(puzzle, letter);
 
     if (amount > 0) {
+      const spinValue =
+        lastSpinResult?.type === "money"
+          ? lastSpinResult.value ?? 0
+          : currentSpinValue;
 
-      // Correct guess:
-      // wheel value multiplied by found letters
-      const gainedScore =
-        amount * currentSpinValue;
+      let gainedScore = amount * spinValue;
 
+      if (lastSpinResult?.type === "double") {
+        gainedScore *= 2;
+      }
 
       setPlayers(previousPlayers =>
         previousPlayers.map((player, index) => {
-
           if (index !== currentPlayerIndex) {
             return player;
           }
@@ -126,40 +188,76 @@ export function useGame() {
             ...player,
             score: player.score + gainedScore
           };
-
         })
       );
     }
 
-    // Store the guessed letter
-    const newLetters = [
-      ...guessedLetters,
-      letter
-    ];
-
-
+    const newLetters = [...guessedLetters, letter];
     setGuessedLetters(newLetters);
 
-
-    // Check if all letters have been revealed
-    if (
-      isPuzzleSolved(
-        puzzle,
-        newLetters
-      )
-    ) {
+    if (isPuzzleSolved(puzzle, newLetters)) {
       setGamePhase("won");
       return;
     }
 
-    // Move to the next player after every guess.
     setCurrentPlayerIndex(previousIndex =>
       (previousIndex + 1) % players.length
     );
     setCurrentSpinValue(0);
+    setLastSpinResult(null);
     setGamePhase("spinning");
   }
 
+
+  function attemptSolve(guess: string) {
+    if (gamePhase !== "guessing") {
+      return;
+    }
+
+    const normalizedGuess = guess
+      .trim()
+      .toUpperCase();
+
+    const normalizedPuzzle = puzzle.trim().toUpperCase();
+
+    if (normalizedGuess === normalizedPuzzle) {
+      const missingLetters = [...puzzle]
+        .filter(letter => letter !== " " && !guessedLetters.includes(letter));
+
+      const points = missingLetters.length * 1000;
+
+      if (points > 0) {
+        setPlayers(previousPlayers =>
+          previousPlayers.map((player, index) => {
+            if (index !== currentPlayerIndex) {
+              return player;
+            }
+
+            return {
+              ...player,
+              score: player.score + points
+            };
+          })
+        );
+      }
+
+      const allLetters = new Set(
+        puzzle.split("").filter(letter => letter !== " ")
+      );
+      setGuessedLetters([...guessedLetters, ...allLetters].filter(
+        (letter, index, array) => array.indexOf(letter) === index
+      ));
+      setGamePhase("won");
+      return;
+    }
+
+    setCurrentPlayerIndex(previousIndex =>
+      (previousIndex + 1) % players.length
+    );
+    setCurrentSpinValue(0);
+    setLastSpinResult(null);
+    setGamePhase("spinning");
+  }
 
   function restartGame() {
     setPlayers([
@@ -179,9 +277,15 @@ export function useGame() {
         score: 0,
       },
     ]);
+    if (turnTimerRef.current !== null) {
+      window.clearTimeout(turnTimerRef.current);
+      turnTimerRef.current = null;
+    }
+
     setCurrentPlayerIndex(0);
     setGuessedLetters([]);
     setCurrentSpinValue(0);
+    setLastSpinResult(null);
     setGamePhase("spinning");
     setPuzzleData(getRandomPuzzle());
   }
@@ -195,6 +299,7 @@ export function useGame() {
     currentPlayerIndex,
 
     gamePhase,
+    lastSpinResult,
 
     puzzle,
     category,
@@ -205,6 +310,7 @@ export function useGame() {
     setGamePhase,
 
     guessLetter,
+    attemptSolve,
     handleSpin,
     restartGame
   };

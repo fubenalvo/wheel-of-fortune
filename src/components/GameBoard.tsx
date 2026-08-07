@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useGame } from "../game/useGame";
 import Keyboard from "./Keyboard";
 import Puzzle from "./Puzzle";
@@ -5,6 +6,7 @@ import ScoreBoard from "./ScoreBoard";
 import Wheel from "./Wheel";
 
 function GameBoard() {
+  const [solveGuess, setSolveGuess] = useState("");
 
   const {
     players,
@@ -15,13 +17,31 @@ function GameBoard() {
     puzzle,
     category,
     guessLetter,
+    attemptSolve,
     handleSpin,
     restartGame,
+    lastSpinResult,
   } = useGame();
+
+  function handleSolve() {
+    attemptSolve(solveGuess);
+    setSolveGuess("");
+  }
 
   return (
     <div>
       <h1>Wheel of Fortune</h1>
+
+
+      <div className="main-column column-left">
+        <Wheel
+          onSpinResult={handleSpin}
+          disabled={gamePhase !== "spinning"}
+          lastResult={lastSpinResult}
+        />
+
+      </div>
+
       <p>
         Category: {category}
       </p>
@@ -31,7 +51,7 @@ function GameBoard() {
       />
       <br />
 
-      {gamePhase !== "won" && (
+      {gamePhase !== "won" && gamePhase !== "waiting" && (
         <Keyboard
           onLetterClick={guessLetter}
           usedLetters={guessedLetters}
@@ -55,15 +75,27 @@ function GameBoard() {
       />
       <br />
       <br />
-      <Wheel
-        onSpinResult={handleSpin}
-      />
+
       <p>
         Current spin value:
         {" "}
         {currentSpinValue}
       </p>
 
+      {gamePhase === "guessing" && (
+        <div>
+          <h3>Megfejtés</h3>
+          <input
+            type="text"
+            value={solveGuess}
+            onChange={event => setSolveGuess(event.target.value)}
+            placeholder="Írd be a megfejtést"
+          />
+          <button onClick={handleSolve} disabled={!solveGuess.trim()}>
+            Megfejtés
+          </button>
+        </div>
+      )}
 
       <p>
         Game phase:
