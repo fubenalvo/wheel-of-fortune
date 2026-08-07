@@ -1,76 +1,86 @@
+import { useGame } from "../game/useGame";
 import Keyboard from "./Keyboard";
 import Puzzle from "./Puzzle";
 import ScoreBoard from "./ScoreBoard";
 import Wheel from "./Wheel";
-import { useState } from "react";
 
 function GameBoard() {
 
-  const [score, setScore] = useState(0);
-  const [puzzle, setPuzzle] = useState("MAGYAR JATEKFEJLESZTES");
-  const [guessedLetters, setGuessedLetters] = useState<string[]>([]);
-  const [wheelValue, setWheelValue] = useState(0);
-  const [currentSpinValue, setCurrentSpinValue] = useState(0);
-
-  function guessLetter(letter: string)
-  {
-    if (guessedLetters.includes(letter))
-    {
-      return;
-    }
-
-    setGuessedLetters([
-      ...guessedLetters,
-      letter
-    ]);
-  }
-
-  function handleSpin(value: number)
-  {
-    //setWheelValue(value);
-    setCurrentSpinValue(value);
-  }
+  const {
+    players,
+    currentPlayer,
+    guessedLetters,
+    currentSpinValue,
+    gamePhase,
+    puzzle,
+    category,
+    guessLetter,
+    handleSpin,
+    restartGame,
+  } = useGame();
 
   return (
     <div>
-      <h1>Szerencsekerék</h1>
-
-
-      <Puzzle word={puzzle} guessedLetters={guessedLetters} />
-
-      <Keyboard onLetterClick={guessLetter} usedLetters={guessedLetters} />
-
-
-
+      <h1>Wheel of Fortune</h1>
       <p>
-        Tippelt betűk:
+        Category: {category}
+      </p>
+      <Puzzle
+        word={puzzle}
+        guessedLetters={guessedLetters}
+      />
+      <br />
+
+      {gamePhase !== "won" && (
+        <Keyboard
+          onLetterClick={guessLetter}
+          usedLetters={guessedLetters}
+
+          // Disable keyboard until the wheel has been spun
+          disabled={
+            gamePhase !== "guessing"
+          }
+        />
+      )}
+      <br />
+      <p>
+        Guessed letters:
+        {" "}
         {guessedLetters.join(", ")}
       </p>
 
-      <br/><br/>
-
-      <ScoreBoard score={score} />
-      <button onClick={() => setScore(score + 100)}>
-        +100 pont
-      </button>
-
-
-
-      <br/><br/>
+      <ScoreBoard
+        currentPlayer={currentPlayer}
+        players={players}
+      />
+      <br />
+      <br />
       <Wheel
         onSpinResult={handleSpin}
       />
       <p>
-        Kerék eredménye: {wheelValue}
-      </p>
-      <p>
-        Aktuális érték:
+        Current spin value:
+        {" "}
         {currentSpinValue}
       </p>
 
 
+      <p>
+        Game phase:
+        {" "}
+        {gamePhase}
+      </p>
+
+      {gamePhase === "won" && (
+        <div>
+          <h2>Vége a játéknak!</h2>
+          <button onClick={restartGame}>Új játék</button>
+        </div>
+      )}
+
     </div>
   );
 }
+
 
 export default GameBoard;

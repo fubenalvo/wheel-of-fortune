@@ -1,6 +1,7 @@
 type KeyboardProps = {
   onLetterClick: (letter: string) => void;
   usedLetters: string[];
+ disabled:boolean;
 };
 
 
@@ -14,7 +15,7 @@ const letters = [
 ];
 
 
-function Keyboard({ onLetterClick, usedLetters }: KeyboardProps) {
+function Keyboard({ onLetterClick, usedLetters, disabled }: KeyboardProps) {
 
   return (
     <div>
@@ -22,7 +23,7 @@ function Keyboard({ onLetterClick, usedLetters }: KeyboardProps) {
 
         <button
           key={letter}
-          disabled={usedLetters.includes(letter)}
+          disabled={disabled || usedLetters.includes(letter)}
           onClick={() => onLetterClick(letter)}
         >
           {letter}

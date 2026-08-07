@@ -1,12 +1,20 @@
+import type { Player } from "../models/Player";
+
 type ScoreBoardProps = {
-  score: number;
+  currentPlayer: Player;
+    players: Player[];
 };
 
-function ScoreBoard({ score }: ScoreBoardProps) {
+function ScoreBoard({ currentPlayer, players }: ScoreBoardProps) {
 
   return (
     <div>
-      Pontszám: {score}
+        <h2>Score Board</h2>
+        {players.map((player) => (
+            <div className={player.id === currentPlayer.id ? "current-player" : ""} key={player.id}>
+            {player.name}: {player.score}
+            </div>
+        ))}
     </div>
   );
 }
