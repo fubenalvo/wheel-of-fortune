@@ -45,6 +45,11 @@
   pointer-events: none;
 }
 
+.side-column.right-column .side-column-item.selected {
+  background: #aaaaaa;
+  color: #000;
+}
+
 .side-column.right-column .side-column-item:not(.selected):after {
   opacity: 0;
 }
@@ -278,7 +283,7 @@
   padding: 0.8vw 1.6vw;
   border-radius: 0;
   border: none;
-  background: rgba(255, 255, 255, 0.35);
+  background: #ffffff;
   color: #111;
   font-size: 1.55vw;
   font-weight: 800;
@@ -288,8 +293,8 @@
 }
 
 .spin-button:hover {
-  transform: translateY(-0.1vw);
-  box-shadow: 0 0.7vw 1.2vw rgba(0, 0, 0, 0.28);
+  
+  background: #aaaaaa;
 }
 
 .spin-button:disabled {

@@ -119,7 +119,7 @@ function GameBoard() {
           </div>
         )}
 
-          {gamePhase === "guessing" && (
+          {gamePhase === "guessing" && !currentPlayer.computer && (
             <div className="solve-guess">
               <input
                 type="text"
