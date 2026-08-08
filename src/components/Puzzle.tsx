@@ -6,21 +6,19 @@ type PuzzleProps = {
 function Puzzle({ word, guessedLetters }: PuzzleProps) {
 
   return (
-    <div>
+    <div className="puzzle-container">
       {word.split("").map((letter, index) => {
 
         if (letter === " ") {
           return (
-            <span key={index}>
-              &nbsp;&nbsp;
-            </span>
+            <br/>
           );
         }
 
         const visible = guessedLetters.includes(letter);
 
         return (
-          <span key={index}>
+          <span className="puzzle-letter" key={index}>
             {visible ? letter : "_"}{" "}
           </span>
         );

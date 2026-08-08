@@ -55,8 +55,6 @@ function GameBoard() {
   return (
     <div className="game-board">
       
-
-
       <div className="side-column left-column">
         <Wheel
           onSpinResult={handleSpin}
@@ -67,22 +65,26 @@ function GameBoard() {
 
       </div>
       <div className="main-column">
-        <h1>Wheel of Fortune</h1>
-      <p>
-        Category: {category}
-      </p>
-      <Puzzle
-        word={puzzle}
-        guessedLetters={guessedLetters}
-      />
-      <br />
-
-
-      <ScoreBoard
-        currentPlayer={currentPlayer}
-        players={players}
-      />
-
+        <div className="main-column-left">
+          <h1>Wheel of Fortune</h1>  
+          <div className="puzzle-positioner">
+            <div className="puzzle-positioner-helper">
+              <p className="puzzle-category">
+                Category: {category}
+              </p>
+              <Puzzle
+                word={puzzle}
+                guessedLetters={guessedLetters}
+              />   
+            </div>
+          </div>       
+        </div>
+        <div className="main-column-right">
+          <ScoreBoard
+            currentPlayer={currentPlayer}
+            players={players}
+          />          
+        </div>
 
         <div className="keyboard-letters">
           {gamePhase !== "won" && gamePhase !== "waiting" && (
@@ -106,8 +108,7 @@ function GameBoard() {
           </p>
 
           {gamePhase === "guessing" && (
-            <div>
-              <h3>Megfejtés</h3>
+            <div className="solve-guess">
               <input
                 type="text"
                 value={solveGuess}

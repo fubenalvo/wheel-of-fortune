@@ -50,9 +50,9 @@ function Wheel({ onSpinResult, disabled,  autoSpinTrigger }: WheelProps) {
     setIsSpinning(true);
 
     const finalIndex = Math.floor(Math.random() * wheelValues.length);
-    const fullLoops = 3 + Math.floor(Math.random() * 3);
-    const offset = (finalIndex - selectedIndex + wheelValues.length) % wheelValues.length;
-    const steps = fullLoops * wheelValues.length + offset;
+    const fullLoops = 2 + Math.floor(Math.random() * 2); // 2 to 3 full loops
+    const offset = (finalIndex - selectedIndex + wheelValues.length) % wheelValues.length; // Calculate the offset to reach the final index
+    const steps = fullLoops * wheelValues.length + offset; // Total steps to reach the final index
 
     let currentIndex = selectedIndex;
     let step = 0;
@@ -65,7 +65,7 @@ function Wheel({ onSpinResult, disabled,  autoSpinTrigger }: WheelProps) {
       if (step < steps) {
         const delay = Math.max(
           40,
-          55 + step * 3.5 + (step === steps - 1 ? 100 : 0)
+          55 + step * 3.5 + (step === steps - 1 ? 50 : 0)
         );
         animationRef.current = window.setTimeout(tick, delay);
         return;

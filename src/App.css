@@ -51,11 +51,55 @@
   width: 75.2vw;
   position: relative;
   height: 31vw;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+
+.main-column-left {
+  padding-top: 3vw;
+  padding-left: 6vw;
+  width: 60%;
+}
+
+
+.main-column-right {
+  width: 40%;
+  padding-top: 3vw;
+  padding-left: 3vw;
+  text-align: left;
 }
 
 .current-player {
   font-weight: bold;
   color: white;
+}
+
+.puzzle-container {
+  text-align: left;
+  display: inline-block;
+}
+
+.puzzle-positioner {
+  display: flex;
+  align-items:  center;
+  justify-content: center;
+  height: 16vw;
+  flex-wrap: wrap;
+}
+
+.puzzle-category {
+  margin-bottom: 1vw;
+}
+
+.puzzle-letter {
+  display: inline-block;
+  font-size: 2.0vw;
+  background-color: #aaaaaa;
+  color: black;
+  padding: 0.2vw 0.4vw;
+  margin: 0.3vw 0.1vw;
 }
 
 .player-robot-icon {
@@ -87,6 +131,8 @@
   margin: 0 0.2vw;
   color: black;
   transition: .3s ease all;
+  border: 0;
+  padding: 0.1vw 0.25vw;
 }
 
 .keyboard-letters button:hover {
@@ -101,6 +147,57 @@
 .keyboard-letters button.already-used {
   pointer-events: none;
   opacity: 0.0;
+}
+
+.solve-guess {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.15vw;
+  margin-top: -0.4vw;  
+}
+
+.solve-guess input {
+  flex: 1;
+  min-width: 20vw;
+  max-width: 32vw;
+  padding: 0.5vw 1vw;
+  border-radius: 0;
+  border: 0.15vw solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.95);
+  color: #111;
+  font-size: 1.55vw;
+  font-weight: 700;
+  box-shadow: inset 0 0.2vw 0.6vw rgba(0, 0, 0, 0.15);
+  outline: none;
+}
+
+.solve-guess input:focus {
+  border-color: #fff;
+  box-shadow: 0 0 0 0.25vw rgba(255, 255, 255, 0.35);
+}
+
+.solve-guess button {
+  padding: 0.8vw 1.6vw;
+  border-radius: 0;
+  border: none;
+  background: rgba(255, 255, 255, 0.35);
+  color: #111;
+  font-size: 1.55vw;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 0.5vw 1vw rgba(0, 0, 0, 0.25);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+}
+
+.solve-guess button:hover:not(:disabled) {
+  transform: translateY(-0.1vw);
+  box-shadow: 0 0.7vw 1.2vw rgba(0, 0, 0, 0.28);
+}
+
+.solve-guess button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
 .bottom-info {
