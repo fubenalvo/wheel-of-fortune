@@ -1,0 +1,18 @@
+{
+  "name": "Wheel of Fortune",
+  "short_name": "Wheel",
+  "description": "Egyszerű egyképernyős Wheel of Fortune játék webappként.",
+  "start_url": ".",
+  "scope": "/",
+  "display": "fullscreen",
+  "orientation": "portrait",
+  "theme_color": "#000000",
+  "background_color": "#000000",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
