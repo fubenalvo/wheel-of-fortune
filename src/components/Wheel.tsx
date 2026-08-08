@@ -28,7 +28,7 @@ const wheelValues = [
 ];
 
 
-function Wheel({ onSpinResult, disabled, lastResult, autoSpinTrigger }: WheelProps) {
+function Wheel({ onSpinResult, disabled,  autoSpinTrigger }: WheelProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isSpinning, setIsSpinning] = useState(false);
   const animationRef = useRef<number | null>(null);
