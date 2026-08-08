@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { Player } from "../models/Player";
 
 import {
@@ -43,7 +43,7 @@ export function useGame() {
       id: 2,
       name: "Gipsz Jakab",
       score: 0,
-      computer: false,
+      computer: true,
       difficulty: 1,
     },
     {
@@ -101,7 +101,7 @@ export function useGame() {
     };
   }, []);
 
-  function scheduleNextTurn() {
+  const scheduleNextTurn = useCallback(() => {
     if (turnTimerRef.current !== null) {
       window.clearTimeout(turnTimerRef.current);
     }
@@ -117,7 +117,7 @@ export function useGame() {
       setLastSpinResult(null);
       setGamePhase("spinning");
     }, 3000);
-  }
+  }, [players.length]);
 
   function getComputerHitChance(difficulty: number) {
     return Math.min(
@@ -174,28 +174,107 @@ export function useGame() {
       : null;
   }
 
-  function getRandomWheelResult() {
-    const results: Array<{
-      type: "money" | "bankrupt" | "halve" | "double";
-      value?: number;
-    }> = [
-      { type: "bankrupt" },
-      { type: "money", value: 5000 },
-      { type: "money", value: 1000 },
-      { type: "money", value: 500 },
-      { type: "money", value: 300 },
-      { type: "money", value: 250 },
-      { type: "money", value: 200 },
-      { type: "money", value: 150 },
-      { type: "money", value: 100 },
-      { type: "money", value: 50 },
-      { type: "money", value: 10 },
-      { type: "halve" },
-      { type: "double" },
-    ];
+  const handleSpin = useCallback(
+    (result: { type: "money" | "bankrupt" | "halve" | "double"; value?: number }) => {
+      setLastSpinResult(result);
 
-    return results[Math.floor(Math.random() * results.length)];
-  }
+      if (result.type === "money") {
+        setCurrentSpinValue(result.value ?? 0);
+        setGamePhase("guessing");
+        return;
+      }
+
+      if (result.type === "double") {
+        setGamePhase("guessing");
+        return;
+      }
+
+      setPlayers(previousPlayers =>
+        previousPlayers.map((player, index) => {
+          if (index !== currentPlayerIndex) {
+            return player;
+          }
+
+          if (result.type === "bankrupt") {
+            return {
+              ...player,
+              score: 0,
+            };
+          }
+
+          if (result.type === "halve") {
+            return {
+              ...player,
+              score: Math.floor(player.score / 2),
+            };
+          }
+
+          return player;
+        })
+      );
+
+      setCurrentSpinValue(0);
+      scheduleNextTurn();
+    },
+    [currentPlayerIndex, scheduleNextTurn]
+  );
+
+
+  const guessLetter = useCallback(
+    (letter: string) => {
+      if (gamePhase !== "guessing") {
+        return;
+      }
+
+      if (guessedLetters.includes(letter)) {
+        return;
+      }
+
+      const amount = countLetter(puzzle, letter);
+
+      if (amount > 0) {
+        const spinValue =
+          lastSpinResult?.type === "money"
+            ? lastSpinResult.value ?? 0
+            : currentSpinValue;
+
+        let gainedScore = amount * spinValue;
+
+        if (lastSpinResult?.type === "double") {
+          gainedScore *= 2;
+        }
+
+        setPlayers(previousPlayers =>
+          previousPlayers.map((player, index) => {
+            if (index !== currentPlayerIndex) {
+              return player;
+            }
+
+            return {
+              ...player,
+              score: player.score + gainedScore
+            };
+          })
+        );
+      }
+
+      const newLetters = [...guessedLetters, letter];
+      setGuessedLetters(newLetters);
+
+      if (isPuzzleSolved(puzzle, newLetters)) {
+        setGamePhase("won");
+        return;
+      }
+
+      setCurrentPlayerIndex(previousIndex =>
+        (previousIndex + 1) % players.length
+      );
+      setCurrentSpinValue(0);
+      setLastSpinResult(null);
+      setGamePhase("spinning");
+    },
+    [currentPlayerIndex, currentSpinValue, gamePhase, guessedLetters, lastSpinResult, players.length, puzzle]
+  );
 
   useEffect(() => {
     if (!currentPlayer.computer) {
@@ -205,13 +284,6 @@ export function useGame() {
     if (aiTimerRef.current !== null) {
       window.clearTimeout(aiTimerRef.current);
       aiTimerRef.current = null;
-    }
-
-    if (gamePhase === "spinning") {
-      aiTimerRef.current = window.setTimeout(() => {
-        aiTimerRef.current = null;
-        handleSpin(getRandomWheelResult());
-      }, COMPUTER_THINK_DELAY_MS);
     }
 
     if (gamePhase === "guessing") {
@@ -230,117 +302,7 @@ export function useGame() {
         aiTimerRef.current = null;
       }
     };
-  }, [currentPlayer.computer, currentPlayer.difficulty, gamePhase, guessedLetters]);
-
-  /*
-    Called after the wheel stops spinning.
-    The result becomes the value of the next letter guess.
-  */
-  function handleSpin(result: { type: "money" | "bankrupt" | "halve" | "double"; value?: number }) {
-    setLastSpinResult(result);
-
-    if (result.type === "money") {
-      setCurrentSpinValue(result.value ?? 0);
-      setGamePhase("guessing");
-      return;
-    }
-
-    if (result.type === "double") {
-      setGamePhase("guessing");
-      return;
-    }
-
-    setPlayers(previousPlayers =>
-      previousPlayers.map((player, index) => {
-        if (index !== currentPlayerIndex) {
-          return player;
-        }
-
-        if (result.type === "bankrupt") {
-          return {
-            ...player,
-            score: 0,
-          };
-        }
-
-        if (result.type === "halve") {
-          return {
-            ...player,
-            score: Math.floor(player.score / 2),
-          };
-        }
-
-        return player;
-      })
-    );
-
-    setCurrentSpinValue(0);
-    scheduleNextTurn();
-  }
-
-
-  
-  /*
-    Called when the player selects a letter.
-
-    Checks:
-    - Was this letter already used?
-    - How many times does it appear?
-    - Should score increase?
-    - Is the puzzle solved?
-  */
-  function guessLetter(letter: string) {
-    if (gamePhase !== "guessing") {
-      return;
-    }
-
-    if (guessedLetters.includes(letter)) {
-      return;
-    }
-
-    const amount = countLetter(puzzle, letter);
-
-    if (amount > 0) {
-      const spinValue =
-        lastSpinResult?.type === "money"
-          ? lastSpinResult.value ?? 0
-          : currentSpinValue;
-
-      let gainedScore = amount * spinValue;
-
-      if (lastSpinResult?.type === "double") {
-        gainedScore *= 2;
-      }
-
-      setPlayers(previousPlayers =>
-        previousPlayers.map((player, index) => {
-          if (index !== currentPlayerIndex) {
-            return player;
-          }
-
-          return {
-            ...player,
-            score: player.score + gainedScore
-          };
-        })
-      );
-    }
-
-    const newLetters = [...guessedLetters, letter];
-    setGuessedLetters(newLetters);
-
-    if (isPuzzleSolved(puzzle, newLetters)) {
-      setGamePhase("won");
-      return;
-    }
-
-    setCurrentPlayerIndex(previousIndex =>
-      (previousIndex + 1) % players.length
-    );
-    setCurrentSpinValue(0);
-    setLastSpinResult(null);
-    setGamePhase("spinning");
-  }
+  }, [currentPlayerIndex, currentPlayer.computer, currentPlayer.difficulty, gamePhase, guessedLetters, guessLetter]);
 
 
   function attemptSolve(guess: string) {

@@ -1,34 +1,61 @@
 .wheel-container {
+  position: relative;
+  width: 100%;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 12px;
+  flex-wrap: wrap;
+  height: 30.4vw;
+  padding-top: 0.3vw;
+  padding-bottom: 0.3vw;
 }
 
-.wheel {
-  display: grid;
-  grid-template-columns: repeat(1, 190px);
-  gap: 8px;
-  padding: 12px;
-  background: black;
+.wheel-container button {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
 }
 
 .wheel-item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 48px;
-  border-radius: 0px;
-  background: black;
-  border: 2px solid #b9b9b9;
-  color: #b9b9b9;
-  font-weight: 600;
-  transition: transform 0.15s ease, background 0.15s ease;
+  position: static;
+  transition: none;
 }
 
 .wheel-item.selected {
   background: #b9b9b9;
   color: #000;
-  transform: scale(1.05);
-  box-shadow: 0 0 0 2px #222;
 }
+
+.wheel-item:after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 31vw;
+  z-index: 10;
+  background-size: 100% 100%;
+  pointer-events: none;
+}
+
+.wheel-item:not(.selected):after {
+  opacity: 0;
+}
+
+.wheel-item:nth-child(1):after {background-image: url("../assets/L1.png");}
+.wheel-item:nth-child(2):after {background-image: url("../assets/L2.png");}
+.wheel-item:nth-child(3):after {background-image: url("../assets/L3.png");}
+.wheel-item:nth-child(4):after {background-image: url("../assets/L4.png");}
+.wheel-item:nth-child(5):after {background-image: url("../assets/L5.png");}
+.wheel-item:nth-child(6):after {background-image: url("../assets/L6.png");}
+.wheel-item:nth-child(7):after {background-image: url("../assets/L7.png");}
+.wheel-item:nth-child(8):after {background-image: url("../assets/L8.png");}
+.wheel-item:nth-child(9):after {background-image: url("../assets/L9.png");}
+.wheel-item:nth-child(10):after {background-image: url("../assets/L10.png");}
+.wheel-item:nth-child(11):after {background-image: url("../assets/L11.png");}
+.wheel-item:nth-child(12):after {background-image: url("../assets/L12.png");}
+.wheel-item:nth-child(13):after {background-image: url("../assets/L13.png");}

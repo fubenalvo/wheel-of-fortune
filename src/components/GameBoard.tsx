@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGame } from "../game/useGame";
 import Keyboard from "./Keyboard";
 import Puzzle from "./Puzzle";
@@ -7,10 +7,12 @@ import Wheel from "./Wheel";
 
 function GameBoard() {
   const [solveGuess, setSolveGuess] = useState("");
+  const [computerSpinRequest, setComputerSpinRequest] = useState<number | null>(null);
 
   const {
     players,
     currentPlayer,
+    currentPlayerIndex,
     guessedLetters,
     currentSpinValue,
     gamePhase,
@@ -23,21 +25,44 @@ function GameBoard() {
     lastSpinResult,
   } = useGame();
 
+  const difficultyLevels = [
+    "Analfabéta",
+    "Pancser",
+    "Kontár",
+    "Amatőr",
+    "Kezdő",
+    "Haladó",
+    "Rutinos",
+    "No csak",
+    "Profi",
+    "Zseni",
+    "Genius",
+    "Einstein",
+    "Mint én",
+  ];
+
   function handleSolve() {
     attemptSolve(solveGuess);
     setSolveGuess("");
   }
+
+  useEffect(() => {
+    if (currentPlayer.computer && gamePhase === "spinning") {
+      setComputerSpinRequest(previous => (previous ?? 0) + 1);
+    }
+  }, [currentPlayer.computer, currentPlayer.difficulty, currentPlayerIndex, gamePhase]);
 
   return (
     <div className="game-board">
       
 
 
-      <div className="side-column">
+      <div className="side-column left-column">
         <Wheel
           onSpinResult={handleSpin}
           disabled={gamePhase !== "spinning" || currentPlayer.computer}
           lastResult={lastSpinResult}
+          autoSpinTrigger={computerSpinRequest}
         />
 
       </div>
@@ -63,7 +88,6 @@ function GameBoard() {
           }
         />
       )}
-      <br />
       <p>
         Guessed letters:
         {" "}
@@ -74,45 +98,59 @@ function GameBoard() {
         currentPlayer={currentPlayer}
         players={players}
       />
-      <br />
-      <br />
 
-      <p>
-        Current spin value:
-        {" "}
-        {currentSpinValue}
-      </p>
 
-      {gamePhase === "guessing" && (
-        <div>
-          <h3>Megfejtés</h3>
-          <input
-            type="text"
-            value={solveGuess}
-            onChange={event => setSolveGuess(event.target.value)}
-            placeholder="Írd be a megfejtést"
-          />
-          <button onClick={handleSolve} disabled={!solveGuess.trim()}>
-            Megfejtés
-          </button>
+        <div className="bottom-info">
+          <p>
+            Current spin value:
+            {" "}
+            {currentSpinValue}
+          </p>
+
+          {gamePhase === "guessing" && (
+            <div>
+              <h3>Megfejtés</h3>
+              <input
+                type="text"
+                value={solveGuess}
+                onChange={event => setSolveGuess(event.target.value)}
+                placeholder="Írd be a megfejtést"
+              />
+              <button onClick={handleSolve} disabled={!solveGuess.trim()}>
+                Megfejtés
+              </button>
+            </div>
+          )}
+
+
+          <p>
+            Game phase:
+            {" "}
+            {gamePhase}
+          </p>
+
+          {gamePhase === "won" && (
+            <div>
+              <h2>Vége a játéknak!</h2>
+              <button onClick={restartGame}>Új játék</button>
+            </div>
+          )}
         </div>
-      )}
-
-      <p>
-        Game phase:
-        {" "}
-        {gamePhase}
-      </p>
-
-      {gamePhase === "won" && (
-        <div>
-          <h2>Vége a játéknak!</h2>
-          <button onClick={restartGame}>Új játék</button>
-        </div>
-      )}
       </div>
-      <div className="side-column">
 
+      <div className="side-column right-column difficulty-sidebar">
+        
+        {[...difficultyLevels].reverse().map((label, reversedIndex) => {
+          const level = difficultyLevels.length - reversedIndex;
+          return (
+            <div
+              key={label}
+              className={`side-column-item level-${level} ${currentPlayer.difficulty === level ? "selected" : ""}`}
+            >
+              {label}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

@@ -7,6 +7,7 @@ type WheelProps = {
   onSpinResult: (result: WheelResult) => void;
   disabled: boolean;
   lastResult?: WheelResult | null;
+  autoSpinTrigger?: number | null;
 };
 
 
@@ -27,10 +28,11 @@ const wheelValues = [
 ];
 
 
-function Wheel({ onSpinResult, disabled, lastResult }: WheelProps) {
+function Wheel({ onSpinResult, disabled, lastResult, autoSpinTrigger }: WheelProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isSpinning, setIsSpinning] = useState(false);
   const animationRef = useRef<number | null>(null);
+  const lastAutoSpin = useRef<number | null>(null);
 
   useEffect(() => {
     return () => {
@@ -40,8 +42,8 @@ function Wheel({ onSpinResult, disabled, lastResult }: WheelProps) {
     };
   }, []);
 
-  function spinWheel() {
-    if (disabled || isSpinning) {
+  function startSpin(force = false) {
+    if ((!force && disabled) || isSpinning) {
       return;
     }
 
@@ -76,33 +78,45 @@ function Wheel({ onSpinResult, disabled, lastResult }: WheelProps) {
     tick();
   }
 
+  function spinWheel() {
+    startSpin(false);
+  }
+
+  useEffect(() => {
+    if (autoSpinTrigger == null) {
+      return;
+    }
+
+    if (autoSpinTrigger === lastAutoSpin.current) {
+      return;
+    }
+
+    lastAutoSpin.current = autoSpinTrigger;
+    startSpin(true);
+  }, [autoSpinTrigger]);
+
   return (
     <div className="wheel-container">
 
-      <div className="wheel">
         {wheelValues.map((item, index) => {
           const label = item.type === "money" ? `${item.value}` : item.type;
 
           return (
             <div
               key={`${item.type}-${index}`}
-              className={`wheel-item ${selectedIndex === index ? "selected" : ""}`}
+              className={`side-column-item wheel-item ${selectedIndex === index ? "selected" : ""}`}
             >
               {label}
             </div>
           );
         })}
-      </div>
 
       <button onClick={spinWheel} disabled={disabled || isSpinning}>
         {isSpinning ? "Pörgetés..." : "Pörgetés"}
       </button>
 
-      {lastResult && (
-        <p>
-          Utolsó kerék: {lastResult.type === "money" ? `${lastResult.value}` : lastResult.type}
-        </p>
-      )}
+
+      
     </div>
   );
 }
