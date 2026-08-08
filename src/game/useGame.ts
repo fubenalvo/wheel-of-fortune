@@ -36,6 +36,7 @@ export function useGame() {
       id: 1,
       name: "Khaaaan",
       score: 0,
+      sum: 0,
       computer: false,
       difficulty: 1,
     },
@@ -43,6 +44,7 @@ export function useGame() {
       id: 2,
       name: "Gipsz Jakab",
       score: 0,
+      sum: 0,
       computer: true,
       difficulty: 1,
     },
@@ -50,6 +52,7 @@ export function useGame() {
       id: 3,
       name: "Robo Játékos",
       score: 0,
+      sum: 0,
       computer: true,
       difficulty: 1,
     },
@@ -320,30 +323,31 @@ export function useGame() {
       const missingLetters = [...puzzle]
         .filter(letter => letter !== " " && !guessedLetters.includes(letter));
 
-      const points = missingLetters.length * 1000;
+      const solveBonus = missingLetters.length * 1000;
 
-      if (points > 0) {
-        setPlayers(previousPlayers =>
-          previousPlayers.map((player, index) => {
-            if (index !== currentPlayerIndex) {
-              return player;
-            }
-
+      setPlayers(previousPlayers =>
+        previousPlayers.map((player, index) => {
+          if (index !== currentPlayerIndex) {
             return {
               ...player,
-              score: player.score + points
+              score: 0,
             };
-          })
-        );
-      }
+          }
 
-      const allLetters = new Set(
-        puzzle.split("").filter(letter => letter !== " ")
+          return {
+            ...player,
+            sum: player.sum + player.score + solveBonus,
+            score: 0,
+            difficulty: Math.min(player.difficulty + 1, 13),
+          };
+        })
       );
-      setGuessedLetters([...guessedLetters, ...allLetters].filter(
-        (letter, index, array) => array.indexOf(letter) === index
-      ));
-      setGamePhase("won");
+
+      setGuessedLetters([]);
+      setCurrentSpinValue(0);
+      setLastSpinResult(null);
+      setPuzzleData(getRandomPuzzle());
+      setGamePhase("spinning");
       return;
     }
 
@@ -361,6 +365,7 @@ export function useGame() {
         id: 1,
         name: "Khaaaan",
         score: 0,
+        sum: 0,
         computer: false,
         difficulty: 1,
       },
@@ -368,6 +373,7 @@ export function useGame() {
         id: 2,
         name: "Gipsz Jakab",
         score: 0,
+        sum: 0,
         computer: false,
         difficulty: 1,
       },
@@ -375,6 +381,7 @@ export function useGame() {
         id: 3,
         name: "Robo Játékos",
         score: 0,
+        sum: 0,
         computer: true,
         difficulty: 1,
       },

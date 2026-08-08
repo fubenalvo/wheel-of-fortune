@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useGame } from "../game/useGame";
 import Keyboard from "./Keyboard";
 import Puzzle from "./Puzzle";
@@ -7,12 +7,11 @@ import Wheel from "./Wheel";
 
 function GameBoard() {
   const [solveGuess, setSolveGuess] = useState("");
-  const [computerSpinRequest, setComputerSpinRequest] = useState<number | null>(null);
+  const [manualSpinRequest, setManualSpinRequest] = useState(false);
 
   const {
     players,
     currentPlayer,
-    currentPlayerIndex,
     guessedLetters,
     currentSpinValue,
     gamePhase,
@@ -46,11 +45,8 @@ function GameBoard() {
     setSolveGuess("");
   }
 
-  useEffect(() => {
-    if (currentPlayer.computer && gamePhase === "spinning") {
-      setComputerSpinRequest(previous => (previous ?? 0) + 1);
-    }
-  }, [currentPlayer.computer, currentPlayer.difficulty, currentPlayerIndex, gamePhase]);
+  const shouldAutoSpin =
+    currentPlayer.computer && gamePhase === "spinning";
 
   return (
     <div className="game-board">
@@ -60,7 +56,10 @@ function GameBoard() {
           onSpinResult={handleSpin}
           disabled={gamePhase !== "spinning" || currentPlayer.computer}
           lastResult={lastSpinResult}
-          autoSpinTrigger={computerSpinRequest}
+          autoSpin={shouldAutoSpin}
+          manualSpinRequest={manualSpinRequest}
+          onManualSpinConsumed={() => setManualSpinRequest(false)}
+          showButton={false}
         />
 
       </div>
@@ -70,7 +69,7 @@ function GameBoard() {
           <div className="puzzle-positioner">
             <div className="puzzle-positioner-helper">
               <p className="puzzle-category">
-                Category: {category}
+                Kategória: {category}
               </p>
               <Puzzle
                 word={puzzle}
@@ -100,12 +99,25 @@ function GameBoard() {
           )}
         </div>
 
+
         <div className="bottom-info">
           <p>
             Current spin value:
             {" "}
             {currentSpinValue}
           </p>
+
+
+        {gamePhase === "spinning" && !currentPlayer.computer && (
+          <div className="spin-action">
+            <button
+              className="spin-button"
+              onClick={() => setManualSpinRequest(true)}
+            >
+              Pörgetés
+            </button>
+          </div>
+        )}
 
           {gamePhase === "guessing" && (
             <div className="solve-guess">

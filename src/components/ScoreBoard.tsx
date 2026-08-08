@@ -9,21 +9,38 @@ type ScoreBoardProps = {
 function ScoreBoard({ currentPlayer, players }: ScoreBoardProps) {
 
   return (
-    <div>
-        <h2>Score Board</h2>
-        {players.map((player) => (
-            <div className={player.id === currentPlayer.id ? "current-player" : ""} key={player.id}>
-              {player.computer && (
-                <img
-                  className="player-robot-icon"
-                  src={robotIcon}
-                  alt="Robot player"
-                />
-              )}
-              {player.name}
-              : {player.score}
-            </div>
-        ))}
+    <div className="scoreboard">
+      <h2>Score Board</h2>
+      <table className="scoreboard-table">
+        <thead>
+          <tr>
+            <th>név</th>
+            <th>pont</th>
+            <th>sum</th>
+          </tr>
+        </thead>
+        <tbody>
+          {players.map((player) => (
+            <tr
+              key={player.id}
+              className={player.id === currentPlayer.id ? "current-player" : ""}
+            >
+              <td>
+                {player.name}
+                {player.computer && (
+                  <img
+                    className="player-robot-icon"
+                    src={robotIcon}
+                    alt="Robot player"
+                  />
+                )}
+              </td>
+              <td>{player.score}</td>
+              <td>{player.sum}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }

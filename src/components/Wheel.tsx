@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import "./Wheel.css";
 
 type WheelResult = { type: "money" | "bankrupt" | "halve" | "double"; value?: number };
@@ -7,7 +7,10 @@ type WheelProps = {
   onSpinResult: (result: WheelResult) => void;
   disabled: boolean;
   lastResult?: WheelResult | null;
-  autoSpinTrigger?: number | null;
+  autoSpin?: boolean;
+  manualSpinRequest?: boolean;
+  onManualSpinConsumed?: () => void;
+  showButton?: boolean;
 };
 
 
@@ -28,11 +31,19 @@ const wheelValues = [
 ];
 
 
-function Wheel({ onSpinResult, disabled,  autoSpinTrigger }: WheelProps) {
+function Wheel({
+  onSpinResult,
+  disabled,
+  autoSpin = false,
+  manualSpinRequest = false,
+  onManualSpinConsumed,
+  showButton = true,
+}: WheelProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isSpinning, setIsSpinning] = useState(false);
   const animationRef = useRef<number | null>(null);
-  const lastAutoSpin = useRef<number | null>(null);
+  const autoSpinHandledRef = useRef(false);
+  const manualSpinHandledRef = useRef(false);
 
   useEffect(() => {
     return () => {
@@ -42,7 +53,7 @@ function Wheel({ onSpinResult, disabled,  autoSpinTrigger }: WheelProps) {
     };
   }, []);
 
-  function startSpin(force = false) {
+  const startSpin = useCallback((force = false) => {
     if ((!force && disabled) || isSpinning) {
       return;
     }
@@ -76,24 +87,40 @@ function Wheel({ onSpinResult, disabled,  autoSpinTrigger }: WheelProps) {
     };
 
     tick();
-  }
+  }, [disabled, isSpinning, selectedIndex, onSpinResult]);
 
   function spinWheel() {
     startSpin(false);
   }
 
   useEffect(() => {
-    if (autoSpinTrigger == null) {
+    if (!autoSpin) {
+      autoSpinHandledRef.current = false;
       return;
     }
 
-    if (autoSpinTrigger === lastAutoSpin.current) {
+    if (autoSpinHandledRef.current) {
       return;
     }
 
-    lastAutoSpin.current = autoSpinTrigger;
+    autoSpinHandledRef.current = true;
     startSpin(true);
-  }, [autoSpinTrigger]);
+  }, [autoSpin, startSpin]);
+
+  useEffect(() => {
+    if (!manualSpinRequest) {
+      manualSpinHandledRef.current = false;
+      return;
+    }
+
+    if (manualSpinHandledRef.current) {
+      return;
+    }
+
+    manualSpinHandledRef.current = true;
+    startSpin(true);
+    onManualSpinConsumed?.();
+  }, [manualSpinRequest, onManualSpinConsumed, startSpin]);
 
   return (
     <div className="wheel-container">
@@ -111,9 +138,11 @@ function Wheel({ onSpinResult, disabled,  autoSpinTrigger }: WheelProps) {
           );
         })}
 
-      <button onClick={spinWheel} disabled={disabled || isSpinning}>
-        {isSpinning ? "Pörgetés..." : "Pörgetés"}
-      </button>
+      {showButton && (
+        <button onClick={spinWheel} disabled={disabled || isSpinning}>
+          {isSpinning ? "Pörgetés..." : "Pörgetés"}
+        </button>
+      )}
 
 
       
