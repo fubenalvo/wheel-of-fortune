@@ -58,6 +58,51 @@
   color: white;
 }
 
+.player-robot-icon {
+  width: 1.6vw;
+  height: auto;
+  margin-right: 0.4vw;
+  vertical-align: text-bottom;
+  opacity: 0.5;
+  position: relative;
+  top: -5px;
+
+}
+
+.keyboard-letters {
+  position: absolute;
+  bottom: 11%;
+  left: 1%;
+  width: 98%;
+  height: 10%;
+  
+  display: flex;
+  justify-content: space-around;
+}
+
+
+.keyboard-letters button {
+  border: 0;
+  font-size: 2.0vw;
+  margin: 0 0.2vw;
+  color: black;
+  transition: .3s ease all;
+}
+
+.keyboard-letters button:hover {
+  color: white;
+}
+
+
+.keyboard-letters button:disabled {
+  color: rgb(85, 85, 85);
+}
+
+.keyboard-letters button.already-used {
+  pointer-events: none;
+  opacity: 0.0;
+}
+
 .bottom-info {
   position: absolute;
   bottom: 2%;

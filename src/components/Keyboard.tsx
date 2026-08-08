@@ -23,6 +23,7 @@ function Keyboard({ onLetterClick, usedLetters, disabled }: KeyboardProps) {
 
         <button
           key={letter}
+          className={usedLetters.includes(letter) ? "already-used" : ""}
           disabled={disabled || usedLetters.includes(letter)}
           onClick={() => onLetterClick(letter)}
         >

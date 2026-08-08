@@ -31,6 +31,10 @@
   overflow: hidden;
 }
 
+button, input, select, textarea {
+  font-family: "VT323", monospace;
+}
+
 
 #root {
   width: 100vw;

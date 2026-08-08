@@ -77,28 +77,26 @@ function GameBoard() {
       />
       <br />
 
-      {gamePhase !== "won" && gamePhase !== "waiting" && (
-        <Keyboard
-          onLetterClick={guessLetter}
-          usedLetters={guessedLetters}
-
-          // Disable keyboard until the wheel has been spun or if the computer is playing
-          disabled={
-            gamePhase !== "guessing" || currentPlayer.computer
-          }
-        />
-      )}
-      <p>
-        Guessed letters:
-        {" "}
-        {guessedLetters.join(", ")}
-      </p>
 
       <ScoreBoard
         currentPlayer={currentPlayer}
         players={players}
       />
 
+
+        <div className="keyboard-letters">
+          {gamePhase !== "won" && gamePhase !== "waiting" && (
+            <Keyboard
+              onLetterClick={guessLetter}
+              usedLetters={guessedLetters}
+
+              // Disable keyboard until the wheel has been spun or if the computer is playing
+              disabled={
+                gamePhase !== "guessing" || currentPlayer.computer
+              }
+            />
+          )}
+        </div>
 
         <div className="bottom-info">
           <p>
@@ -121,7 +119,6 @@ function GameBoard() {
               </button>
             </div>
           )}
-
 
           <p>
             Game phase:

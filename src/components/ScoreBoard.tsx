@@ -1,8 +1,9 @@
 import type { Player } from "../models/Player";
+import robotIcon from "../assets/robot.png";
 
 type ScoreBoardProps = {
   currentPlayer: Player;
-    players: Player[];
+  players: Player[];
 };
 
 function ScoreBoard({ currentPlayer, players }: ScoreBoardProps) {
@@ -12,7 +13,15 @@ function ScoreBoard({ currentPlayer, players }: ScoreBoardProps) {
         <h2>Score Board</h2>
         {players.map((player) => (
             <div className={player.id === currentPlayer.id ? "current-player" : ""} key={player.id}>
-            {player.name}: {player.score}
+              {player.computer && (
+                <img
+                  className="player-robot-icon"
+                  src={robotIcon}
+                  alt="Robot player"
+                />
+              )}
+              {player.name}
+              : {player.score}
             </div>
         ))}
     </div>
