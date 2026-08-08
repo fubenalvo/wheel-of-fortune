@@ -26,6 +26,7 @@ html,
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  background-image: url(assets/bg.png);
 }
 
 .game-wrapper--hidden {
