@@ -178,7 +178,7 @@
 
 .solve-guess button {
   padding: 0.8vw 1.6vw;
-  border-radius: 0;
+  border-radius: 0.0;
   border: none;
   background: rgba(255, 255, 255, 0.35);
   color: #111;
