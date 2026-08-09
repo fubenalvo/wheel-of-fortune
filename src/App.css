@@ -85,6 +85,12 @@ html,
   background-position: center;
 }
 
+@media (min-width: 2001px) {
+  .game-board {
+    transform: scale(0.75);
+  }
+}
+
 .side-column {
   display: flex;
   flex-wrap: wrap;
@@ -213,12 +219,50 @@ html,
   height: 2vw;
   width: 10vw;
   margin: 0 1vw;
+  font-size: 1.3vw;
+  padding-left: 0.5vw;
 }
 
-.starting-screen .starting-screen-player input[type="checkbox"]{
-  height: 2vw;
+.starting-screen .starting-screen-player input[type="text"]:disabled{
+  opacity: 0.5;
+}
+
+.starting-screen .starting-screen-player input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+
   width: 2vw;
+  height: 2vw;
   margin: 0 1vw;
+
+  background: #222;
+  border: 0.15vw solid #888;
+  border-radius: 0.2vw;
+
+  cursor: pointer;
+  position: relative;
+}
+
+/* Checked állapot */
+.starting-screen .starting-screen-player input[type="checkbox"]:checked {
+  background: #fff;
+  border-color: #fff;
+}
+
+/* Pipa */
+.starting-screen .starting-screen-player input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+
+  width: 0.5vw;
+  height: 1vw;
+
+  border-right: 0.2vw solid #111;
+  border-bottom: 0.2vw solid #111;
+
+  transform: rotate(45deg);
+    left: 0.55vw;
+    top: 0.15vw;
 }
 
 .puzzle-category {
@@ -240,6 +284,7 @@ html,
   margin-left: 0.35vw;
   vertical-align: middle;
   opacity: 0.6;
+  margin-top: -0.3vw;
 }
 
 .scoreboard {

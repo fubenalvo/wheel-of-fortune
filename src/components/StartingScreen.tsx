@@ -86,6 +86,7 @@ function StartingScreen({
             {index + 1}.
 
             <input
+              maxLength={15}
               type="text"
               value={player.name}
               disabled={player.computer}
