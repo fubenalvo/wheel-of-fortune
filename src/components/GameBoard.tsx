@@ -49,7 +49,7 @@ function GameBoard() {
     function handleKeyDown(event: KeyboardEvent) {
 
       // Handle Enter and Space as game action buttons
-      if (event.key === "Enter" || event.key === " ") {
+      if (event.key === "Enter") {
         event.preventDefault();
 
         // Start a new game
