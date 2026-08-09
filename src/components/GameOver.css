@@ -1,0 +1,18 @@
+.game-over {
+  width: 100%;
+  padding: 2vw;
+  box-sizing: border-box;
+  text-align: center;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.65);
+}
+
+.game-over h2 {
+  margin: 0 0 1vw;
+  font-size: 2.4vw;
+}
+
+.game-over p {
+  margin: 0;
+  font-size: 1.35vw;
+}

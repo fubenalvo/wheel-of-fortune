@@ -4,5 +4,4 @@ export interface Player {
     score: number;
     sum: number;
     computer: boolean;
-    difficulty: number;
 }

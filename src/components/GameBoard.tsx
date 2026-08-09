@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useGame } from "../game/useGame";
 import Keyboard from "./Keyboard";
 import Puzzle from "./Puzzle";
+import GameOver from "./GameOver";
 import ScoreBoard from "./ScoreBoard";
 import Wheel from "./Wheel";
 
@@ -15,7 +16,9 @@ function GameBoard() {
     guessedLetters,
     currentSpinValue,
     gamePhase,
+    difficulty,
     puzzle,
+    gameOverResult,
     category,
     guessLetter,
     attemptSolve,
@@ -47,6 +50,10 @@ function GameBoard() {
 
   const shouldAutoSpin =
     currentPlayer.computer && gamePhase === "spinning";
+  const displayedDifficulty = Math.min(
+    Math.max(difficulty, 1),
+    difficultyLevels.length
+  );
 
   return (
     <div className="game-board">
@@ -68,13 +75,23 @@ function GameBoard() {
           <h1>Wheel of Fortune</h1>  
           <div className="puzzle-positioner">
             <div className="puzzle-positioner-helper">
-              <p className="puzzle-category">
+              {gamePhase === "gameOver" && gameOverResult ? (
+                <GameOver
+                  winnerName={gameOverResult.winnerName}
+                  prize={gameOverResult.prize}
+                />
+              ) : null}
+              {gamePhase !== "gameOver" && (
+                <>
+                <p className="puzzle-category">
                 Kategória: {category}
               </p>
               <Puzzle
                 word={puzzle}
                 guessedLetters={guessedLetters}
               />   
+                </>
+              )}
             </div>
           </div>       
         </div>
@@ -86,7 +103,7 @@ function GameBoard() {
         </div>
 
         <div className="keyboard-letters">
-          {gamePhase !== "won" && gamePhase !== "waiting" && (
+          {gamePhase !== "won" && gamePhase !== "waiting" && gamePhase !== "gameOver" && (
             <Keyboard
               onLetterClick={guessLetter}
               usedLetters={guessedLetters}
@@ -134,6 +151,16 @@ function GameBoard() {
           )}
 
           <p>
+          {gamePhase === "gameOver" && (
+            <div className="spin-action">
+              <button
+                className="spin-button"
+                onClick={restartGame}
+              >
+                Új játék
+              </button>
+            </div>
+          )}
             Game phase:
             {" "}
             {gamePhase}
@@ -149,13 +176,12 @@ function GameBoard() {
       </div>
 
       <div className="side-column right-column difficulty-sidebar">
-        
-        {[...difficultyLevels].reverse().map((label, reversedIndex) => {
-          const level = difficultyLevels.length - reversedIndex;
+        {difficultyLevels.map((label, index) => {
+          const level = index + 1;
           return (
             <div
               key={label}
-              className={`side-column-item level-${level} ${currentPlayer.difficulty === level ? "selected" : ""}`}
+              className={`side-column-item level-${level} ${displayedDifficulty === level ? "selected" : ""}`}
             >
               {label}
             </div>
