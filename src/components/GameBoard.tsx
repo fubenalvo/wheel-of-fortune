@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGame } from "../game/useGame";
 import Keyboard from "./Keyboard";
 import Puzzle from "./Puzzle";
@@ -44,6 +44,41 @@ function GameBoard() {
     "Einstein",
     "Mint én",
   ];
+
+useEffect(() => {
+  function handleKeyDown(event: KeyboardEvent) {
+    // Only handle single-character keyboard input
+    if (event.key.length !== 1) {
+      return;
+    }
+
+    // Convert the input to uppercase so lowercase keys work as well
+    const letter = event.key.toUpperCase();
+
+    // Only allow letters used by the game's keyboard
+    const validLetters = [
+      "A", "Á", "B", "C", "D", "E", "É",
+      "F", "G", "H", "I", "Í", "J",
+      "K", "L", "M", "N", "O", "Ó",
+      "Ö", "Ő", "P", "Q", "R", "S",
+      "T", "U", "Ú", "Ü", "Ű",
+      "V", "W", "X", "Y", "Z"
+    ];
+
+    if (!validLetters.includes(letter)) {
+      return;
+    }
+
+    // Use the same logic as clicking a letter on the on-screen keyboard
+    guessLetter(letter);
+  }
+
+  window.addEventListener("keydown", handleKeyDown);
+
+  return () => {
+    window.removeEventListener("keydown", handleKeyDown);
+  };
+}, [guessLetter]);
 
   function handleSolve() {
     attemptSolve(solveGuess);
