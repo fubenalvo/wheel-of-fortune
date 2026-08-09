@@ -203,6 +203,24 @@ html,
   }
 }
 
+.starting-screen .starting-screen-player {
+  display: flex;
+  align-items: center;
+  margin: 1vw;
+}
+
+.starting-screen .starting-screen-player input[type="text"]{
+  height: 2vw;
+  width: 10vw;
+  margin: 0 1vw;
+}
+
+.starting-screen .starting-screen-player input[type="checkbox"]{
+  height: 2vw;
+  width: 2vw;
+  margin: 0 1vw;
+}
+
 .puzzle-category {
   margin-bottom: 1vw;
 }

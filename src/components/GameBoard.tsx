@@ -5,6 +5,7 @@ import Puzzle from "./Puzzle";
 import GameOver from "./GameOver";
 import ScoreBoard from "./ScoreBoard";
 import Wheel from "./Wheel";
+import StartingScreen from "./StartingScreen";
 
 function GameBoard() {
   const [solveGuess, setSolveGuess] = useState("");
@@ -25,6 +26,7 @@ function GameBoard() {
     handleSpin,
     restartGame,
     lastSpinResult,
+    setPlayers
   } = useGame();
 
   const difficultyLevels = [
@@ -73,6 +75,16 @@ function GameBoard() {
       <div className="main-column">
         <div className="main-column-left">
           <h1>Wheel of Fortune</h1>  
+
+
+          {gamePhase == "starting" && (
+            <StartingScreen 
+              players={players}
+              setPlayers={setPlayers}            />
+          )}
+
+
+          {gamePhase !== "starting" && (
           <div className="puzzle-positioner">
             <div className="puzzle-positioner-helper">
               {gamePhase === "gameOver" && gameOverResult ? (
@@ -93,7 +105,11 @@ function GameBoard() {
                 </>
               )}
             </div>
-          </div>       
+          </div>
+          )} 
+
+
+
         </div>
         <div className="main-column-right">
           <ScoreBoard
@@ -150,6 +166,8 @@ function GameBoard() {
             </div>
           )}
 
+
+
           <p>
           {gamePhase === "gameOver" && (
             <div className="spin-action">
@@ -161,6 +179,18 @@ function GameBoard() {
               </button>
             </div>
           )}
+
+          {gamePhase === "starting" && (
+            <div className="spin-action">
+              <button
+                className="spin-button"
+                onClick={restartGame}
+              >
+                Új játék
+              </button>
+            </div>
+          )}
+
             Game phase:
             {" "}
             {gamePhase}
