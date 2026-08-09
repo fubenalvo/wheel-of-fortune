@@ -45,40 +45,97 @@ function GameBoard() {
     "Mint én",
   ];
 
-useEffect(() => {
-  function handleKeyDown(event: KeyboardEvent) {
-    // Only handle single-character keyboard input
-    if (event.key.length !== 1) {
-      return;
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+
+      // Handle Enter and Space as game action buttons
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+
+        // Start a new game
+        if (
+          (gamePhase === "gameOver" ||
+            gamePhase === "won" ||
+            gamePhase === "starting") &&
+          !currentPlayer.computer
+        ) {
+          restartGame();
+          return;
+        }
+
+        // Spin the wheel
+        if (
+          gamePhase === "spinning" &&
+          !currentPlayer.computer
+        ) {
+          setManualSpinRequest(true);
+          return;
+        }
+
+        // Solve the puzzle
+        if (
+          gamePhase === "guessing" &&
+          !currentPlayer.computer &&
+          solveGuess.trim()
+        ) {
+          attemptSolve(solveGuess);
+          setSolveGuess("");
+          return;
+        }
+
+        return;
+      }
+      
+      // Ignore keyboard shortcuts when typing into a form field
+      const target = event.target as HTMLElement;
+
+      if (
+        target.tagName === "INPUT" ||
+        target.tagName === "TEXTAREA" ||
+        target.tagName === "SELECT"
+      ) {
+        return;
+      }
+
+      // Only handle single-character keyboard input
+      if (event.key.length !== 1) {
+        return;
+      }
+
+      // Convert the input to uppercase so lowercase keys work as well
+      const letter = event.key.toUpperCase();
+
+      // Only allow letters used by the game's keyboard
+      const validLetters = [
+        "A", "Á", "B", "C", "D", "E", "É",
+        "F", "G", "H", "I", "Í", "J",
+        "K", "L", "M", "N", "O", "Ó",
+        "Ö", "Ő", "P", "Q", "R", "S",
+        "T", "U", "Ú", "Ü", "Ű",
+        "V", "W", "X", "Y", "Z"
+      ];
+
+      if (!validLetters.includes(letter)) {
+        return;
+      }
+
+      // Use the same logic as clicking a letter on the on-screen keyboard
+      guessLetter(letter);
     }
 
-    // Convert the input to uppercase so lowercase keys work as well
-    const letter = event.key.toUpperCase();
+    window.addEventListener("keydown", handleKeyDown);
 
-    // Only allow letters used by the game's keyboard
-    const validLetters = [
-      "A", "Á", "B", "C", "D", "E", "É",
-      "F", "G", "H", "I", "Í", "J",
-      "K", "L", "M", "N", "O", "Ó",
-      "Ö", "Ő", "P", "Q", "R", "S",
-      "T", "U", "Ú", "Ü", "Ű",
-      "V", "W", "X", "Y", "Z"
-    ];
-
-    if (!validLetters.includes(letter)) {
-      return;
-    }
-
-    // Use the same logic as clicking a letter on the on-screen keyboard
-    guessLetter(letter);
-  }
-
-  window.addEventListener("keydown", handleKeyDown);
-
-  return () => {
-    window.removeEventListener("keydown", handleKeyDown);
-  };
-}, [guessLetter]);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [
+    guessLetter,
+    gamePhase,
+    currentPlayer.computer,
+    solveGuess,
+    attemptSolve,
+    restartGame
+  ]);
 
   function handleSolve() {
     attemptSolve(solveGuess);
