@@ -13,6 +13,8 @@ type Score = {
     date: string;
 };
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function GameOver({ players }: GameOverProps) {
 
     const [topScores, setTopScores] = useState<Score[]>([]);
@@ -20,9 +22,7 @@ function GameOver({ players }: GameOverProps) {
 
     async function loadTopScores() {
         try {
-            const response = await fetch(
-                "http://localhost:3001/api/scores/top"
-            );
+            const response = await fetch(`${API_URL}/api/scores/top`)
 
             if (!response.ok) {
                 throw new Error(`Server returned ${response.status}`);
@@ -47,9 +47,7 @@ function GameOver({ players }: GameOverProps) {
 
         for (const player of humanPlayers) {
             try {
-                const response = await fetch(
-                    "http://localhost:3001/api/scores",
-                    {
+                const response = await fetch( `${API_URL}/api/scores`, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json"
