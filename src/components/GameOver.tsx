@@ -1,17 +1,161 @@
+import { useEffect, useState } from "react";
+import type { Player } from "../models/Player";
 import "./GameOver.css";
 
 type GameOverProps = {
-  winnerName: string;
-  prize: number;
+    players: Player[];
 };
 
-function GameOver({ winnerName, prize }: GameOverProps) {
-  return (
-    <div className="game-over" aria-live="polite">
-      <h2>Játék vége</h2>
-      <p>Gratulálunk {winnerName}, a nyereményed {prize} pont.</p>
-    </div>
-  );
+type Score = {
+    _id: string;
+    name: string;
+    score: number;
+    date: string;
+};
+
+function GameOver({ players }: GameOverProps) {
+
+    const [topScores, setTopScores] = useState<Score[]>([]);
+    const [scoresSubmitted, setScoresSubmitted] = useState(false);
+
+    async function loadTopScores() {
+        try {
+            const response = await fetch(
+                "http://localhost:3001/api/scores/top"
+            );
+
+            if (!response.ok) {
+                throw new Error(`Server returned ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            setTopScores(data);
+
+        } catch (error) {
+            console.warn(
+                "Score server is not available. Continuing without leaderboard.",
+                error
+            );
+        }
+    }
+
+    async function submitScores() {
+        const humanPlayers = players.filter(player => !player.computer);
+
+        let allSubmitted = true;
+
+        for (const player of humanPlayers) {
+            try {
+                const response = await fetch(
+                    "http://localhost:3001/api/scores",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            name: player.name,
+                            score: player.sum
+                        })
+                    }
+                );
+
+                if (!response.ok) {
+                    throw new Error(
+                        `Server returned ${response.status}`
+                    );
+                }
+
+            } catch (error) {
+                console.warn(
+                    `Could not submit score for ${player.name}.`,
+                    error
+                );
+
+                allSubmitted = false;
+            }
+        }
+
+        if (allSubmitted) {
+            setScoresSubmitted(true);
+
+            // Refresh TOP 10 after submitting scores
+            await loadTopScores();
+        }
+    }
+
+    useEffect(() => {
+        async function loadScores() {
+            try {
+                const response = await fetch(
+                    "http://localhost:3001/api/scores/top"
+                );
+
+                if (!response.ok) {
+                    throw new Error(
+                        `Server returned ${response.status}`
+                    );
+                }
+
+                const data = await response.json();
+
+                setTopScores(data);
+
+            } catch (error) {
+                console.warn(
+                    "Score server is not available. Continuing without leaderboard.",
+                    error
+                );
+            }
+        }
+
+        loadScores();
+    }, []);
+
+    return (
+        <div>
+
+            <h1>Játék vége</h1>
+
+            {players.map((player, index) => (
+                !player.computer && (
+                    <div
+                        className="game-over-player"
+                        key={index}
+                    >
+                        {index}. {player.name} - {player.sum}
+                    </div>
+                )
+            ))}
+
+            <input
+                onClick={submitScores}
+                type="button"
+                value={
+                    scoresSubmitted
+                        ? "Eredmények beküldve"
+                        : "Eredmények beküldése"
+                }
+                disabled={scoresSubmitted}
+            />
+
+            <h2 className="topscore-title">ONLINE TOP 10</h2>
+
+            <div className="topscore-grid">
+                {topScores.map((score, index) => (
+                    <div
+                        className="topscore-player"
+                        key={score._id}
+                    >
+                        {index + 1}. {score.name} - {score.score}
+                    </div>
+                ))}
+            </div>
+
+        </div>
+    );
 }
 
 export default GameOver;
+

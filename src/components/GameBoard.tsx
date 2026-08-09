@@ -74,8 +74,9 @@ function GameBoard() {
       </div>
       <div className="main-column">
         <div className="main-column-left">
-          <h1>Wheel of Fortune</h1>  
-
+          {gamePhase != "gameOver" && (
+            <h1>Wheel of Fortune</h1>  
+          )}
 
           {gamePhase == "starting" && (
             <StartingScreen 
@@ -89,8 +90,7 @@ function GameBoard() {
             <div className="puzzle-positioner-helper">
               {gamePhase === "gameOver" && gameOverResult ? (
                 <GameOver
-                  winnerName={gameOverResult.winnerName}
-                  prize={gameOverResult.prize}
+                  players={players}
                 />
               ) : null}
               {gamePhase !== "gameOver" && (

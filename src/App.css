@@ -221,6 +221,7 @@ html,
   margin: 0 1vw;
   font-size: 1.3vw;
   padding-left: 0.5vw;
+  border: 0;
 }
 
 .starting-screen .starting-screen-player input[type="text"]:disabled{
@@ -237,7 +238,7 @@ html,
 
   background: #222;
   border: 0.15vw solid #888;
-  border-radius: 0.2vw;
+  border-radius: 0vw;
 
   cursor: pointer;
   position: relative;
