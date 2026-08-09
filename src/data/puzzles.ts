@@ -66,7 +66,7 @@ export const puzzles: Puzzle[] = [
 
   {
     category: "Videójátékok",
-    text: "THE WITCHER HÁROM"
+    text: "THE WITCHER"
   },
 
   {
@@ -186,7 +186,7 @@ export const puzzles: Puzzle[] = [
 
   {
     category: "Videójátékok",
-    text: "STARDOW VALLEY"
+    text: "STARDEW VALLEY"
   },
 
   {
@@ -251,7 +251,7 @@ export const puzzles: Puzzle[] = [
 
   {
     category: "Videójátékok",
-    text: "BALDUR'S GATE"
+    text: "BALDURS GATE"
   },
 
   {
@@ -381,7 +381,7 @@ export const puzzles: Puzzle[] = [
 
   {
     category: "Filmek",
-    text: "A KARIB-TENGER KALÓZAI"
+    text: "A KARIB TENGER KALÓZAI"
   },
 
   {
@@ -686,6 +686,11 @@ export const puzzles: Puzzle[] = [
 
   {
     category: "Ismert emberek",
+    text: "PAUL MCCARTNEY"
+  },
+
+  {
+    category: "Ismert emberek",
     text: "EMMA WATSON"
   },
 
@@ -801,7 +806,7 @@ export const puzzles: Puzzle[] = [
 
   {
     category: "Márkanév",
-    text: "COCA-COLA"
+    text: "COCA COLA"
   },
 
   {
@@ -1081,7 +1086,7 @@ export const puzzles: Puzzle[] = [
 
   {
     category: "Tárgy",
-    text: "FÉNYKÉPŐGÉP"
+    text: "FÉNYKÉPEZŐGÉP"
   },
 
   {
@@ -1121,7 +1126,7 @@ export const puzzles: Puzzle[] = [
 
   {
     category: "Tárgy",
-    text: "ESPRESSO GÉP"
+    text: "ESZPRESSZÓGÉP"
   },
 
   {
@@ -1166,7 +1171,7 @@ export const puzzles: Puzzle[] = [
 
   {
     category: "Tárgy",
-    text: "MIKROSKÓP"
+    text: "MIKROSZKÓP"
   },
 
   {
@@ -1734,13 +1739,7 @@ export const puzzles: Puzzle[] = [
     text: "VÁROSTERVEZÉS"
   },
 
-  {
-    category: "Fogalom",
-    text: "LOGIKAI KÖVETKEZTETÉS"
-  },
 
-  {
-    category: "Fogalom",
-    text: "SZÓMOHÓ"
-  }
+
+
 ];
