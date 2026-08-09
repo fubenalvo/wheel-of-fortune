@@ -126,7 +126,18 @@ function Wheel({
     <div className="wheel-container">
 
         {wheelValues.map((item, index) => {
-          const label = item.type === "money" ? `${item.value}` : item.type;
+
+          // Map item types to their display labels
+          const labelMap = {
+            money: item.value,
+            bankrupt: "Csőd",
+            halve: "Felező",
+            double: "Duplázó",
+          };
+
+          // Fall back to item.type if the type is not in labelMap
+          const label = String(labelMap[item.type] ?? item.type);
+
 
           return (
             <div
