@@ -380,15 +380,6 @@ function GameBoard() {
           {gamePhase === "won" && (
             <div>
               <h2>Vége a körnek!</h2>
-
-              <button
-                onClick={() => {
-                  playBeep();
-                  restartGame();
-                }}
-              >
-                Új játék
-              </button>
             </div>
           )}
 
