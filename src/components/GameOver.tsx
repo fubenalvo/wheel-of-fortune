@@ -122,12 +122,13 @@ function GameOver({ players }: GameOverProps) {
                         className="game-over-player"
                         key={index}
                     >
-                        {index}. {player.name} - {player.sum}
+                        {player.name} - {player.sum}
                     </div>
                 )
             ))}
 
             <input
+                className="game-over-submut-button"
                 onClick={submitScores}
                 type="button"
                 value={
@@ -146,7 +147,7 @@ function GameOver({ players }: GameOverProps) {
                         className="topscore-player"
                         key={score._id}
                     >
-                        {index + 1}. {score.name} - {score.score}
+                        <div>{index + 1}.</div><div>{score.name}</div><div>{score.score}</div>
                     </div>
                 ))}
             </div>

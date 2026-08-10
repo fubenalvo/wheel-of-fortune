@@ -10,6 +10,7 @@ import StartingScreen from "./StartingScreen";
 function GameBoard() {
   const [solveGuess, setSolveGuess] = useState("");
   const [manualSpinRequest, setManualSpinRequest] = useState(false);
+  const [isWheelSpinning, setIsWheelSpinning] = useState(false);
 
   const {
     players,
@@ -160,6 +161,7 @@ function GameBoard() {
           autoSpin={shouldAutoSpin}
           manualSpinRequest={manualSpinRequest}
           onManualSpinConsumed={() => setManualSpinRequest(false)}
+          onSpinningChange={setIsWheelSpinning}
           showButton={false}
         />
 
@@ -232,9 +234,10 @@ function GameBoard() {
           <div className="spin-action">
             <button
               className="spin-button"
+              disabled={isWheelSpinning}
               onClick={() => setManualSpinRequest(true)}
             >
-              Pörgetés
+                {isWheelSpinning ? "Pörgetés..." : "Pörgetés"}
             </button>
           </div>
         )}

@@ -11,6 +11,7 @@ type WheelProps = {
   manualSpinRequest?: boolean;
   onManualSpinConsumed?: () => void;
   showButton?: boolean;
+  onSpinningChange?: (isSpinning: boolean) => void;
 };
 
 
@@ -38,6 +39,7 @@ function Wheel({
   manualSpinRequest = false,
   onManualSpinConsumed,
   showButton = true,
+  onSpinningChange,
 }: WheelProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isSpinning, setIsSpinning] = useState(false);
@@ -59,6 +61,7 @@ function Wheel({
     }
 
     setIsSpinning(true);
+    onSpinningChange?.(true);
 
     const finalIndex = Math.floor(Math.random() * wheelValues.length);
     const fullLoops = 2 + Math.floor(Math.random() * 2); // 2 to 3 full loops
@@ -83,6 +86,7 @@ function Wheel({
       }
 
       setIsSpinning(false);
+      onSpinningChange?.(false);
       onSpinResult(wheelValues[finalIndex]);
     };
 
