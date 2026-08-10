@@ -46,6 +46,7 @@ export function AudioProvider({ children }: AudioProviderProps) {
   useEffect(() => {
     const beep = new Audio(beepSound);
     beep.preload = "auto";
+    beep.volume = 0.5;
 
     const music = new Audio(musicSound);
     music.preload = "auto";
