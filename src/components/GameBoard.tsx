@@ -13,6 +13,7 @@ function GameBoard() {
   const [solveGuess, setSolveGuess] = useState("");
   const [manualSpinRequest, setManualSpinRequest] = useState(false);
   const [isWheelSpinning, setIsWheelSpinning] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   const {
     isMuted,
@@ -157,6 +158,32 @@ function GameBoard() {
     setSolveGuess("");
   }
 
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+  }  
+
+  useEffect(() => {
+    function handleFullscreenChange() {
+      setIsFullscreen(!!document.fullscreenElement);
+    }
+
+    document.addEventListener(
+      "fullscreenchange",
+      handleFullscreenChange
+    );
+
+    return () => {
+      document.removeEventListener(
+        "fullscreenchange",
+        handleFullscreenChange
+      );
+    };
+  }, []);  
+
   const shouldAutoSpin =
     currentPlayer.computer && gamePhase === "spinning";
 
@@ -241,6 +268,10 @@ function GameBoard() {
             <button onClick={toggleMusic}>
               {isMusicMuted ? "Zene BE" : "Zene KI"}
             </button>
+            &nbsp;
+            <button className="fullscreen-button" onClick={toggleFullscreen}>
+              &nbsp;
+            </button>            
             <br/>
           </div>
 
@@ -348,7 +379,7 @@ function GameBoard() {
 
           {gamePhase === "won" && (
             <div>
-              <h2>Vége a játéknak!</h2>
+              <h2>Vége a körnek!</h2>
 
               <button
                 onClick={() => {

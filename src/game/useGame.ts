@@ -223,6 +223,9 @@ export function useGame() {
    */
   const aiTimerRef = useRef<number | null>(null);
 
+  // Timer for displaying the fully solved puzzle before continuing.
+  const solvedPuzzleTimerRef = useRef<number | null>(null);
+
 
   /*
    * Komponens megszűnésekor minden futó timer törlése.
@@ -238,6 +241,10 @@ export function useGame() {
 
       if (aiTimerRef.current !== null) {
         window.clearTimeout(aiTimerRef.current);
+      }
+
+      if (solvedPuzzleTimerRef.current !== null) {
+        window.clearTimeout(solvedPuzzleTimerRef.current);
       }
     };
   }, []);
@@ -726,40 +733,52 @@ export function useGame() {
 
 
         /*
-         * Az új puzzle-höz minden betűtipp törlődik.
+         * A teljes megfejtést 5 másodpercig megjelenítjük.
+         * A Puzzle komponens így látja az összes betűt.
          */
-        setGuessedLetters([]);
+        setGuessedLetters(
+          Array.from(
+            new Set(
+              puzzle
+                .toUpperCase()
+                .split("")
+                .filter(letter => letter !== " ")
+            )
+          )
+        );
+
         setCurrentSpinValue(0);
         setLastSpinResult(null);
-
-        /*
-         * Az AI megfejtési körszámlálója is újraindul.
-         */
         setComputerSolveRounds({});
+        setGamePhase("won");
 
+        // Wait 5 seconds before continuing to the next puzzle/game over.
+        solvedPuzzleTimerRef.current = window.setTimeout(() => {
+          solvedPuzzleTimerRef.current = null;
 
-        /*
-         * Ha véget ért a játék, eltároljuk a győztest
-         * és a nyereményét.
-         */
-        if (shouldEndGame) {
+          /*
+           * Ha véget ért a játék, eltároljuk a győztest
+           * és a nyereményét.
+           */
+          if (shouldEndGame) {
+            setGameOverResult({
+              winnerName: currentPlayer.name,
+              prize: currentPlayer.sum + roundScore,
+            });
 
-          setGameOverResult({
-            winnerName: currentPlayer.name,
-            prize: currentPlayer.sum + roundScore,
-          });
+            setGamePhase("gameOver");
+            return;
+          }
 
-          setGamePhase("gameOver");
-          return;
-        }
+          /*
+           * Ha még nincs vége a játéknak,
+           * új puzzle-t választunk.
+           */
+          setPuzzleData(getRandomPuzzle());
+          setGuessedLetters([]);
+          setGamePhase("spinning");
+        }, 5000);
 
-
-        /*
-         * Ha még nincs vége a játéknak,
-         * új puzzle-t választunk.
-         */
-        setPuzzleData(getRandomPuzzle());
-        setGamePhase("spinning");
         return;
       }
 
@@ -905,33 +924,51 @@ export function useGame() {
         );
 
 
-        // Új puzzle előtt minden körhöz kapcsolódó állapot törlése.
-        setGuessedLetters([]);
+        /*
+         * A teljes megfejtést 5 másodpercig megjelenítjük.
+         * A Puzzle komponens így látja az összes betűt.
+         */
+        setGuessedLetters(
+          Array.from(
+            new Set(
+              puzzle
+                .toUpperCase()
+                .split("")
+                .filter(letter => letter !== " ")
+            )
+          )
+        );
+
         setCurrentSpinValue(0);
         setLastSpinResult(null);
         setComputerSolveRounds({});
+        setGamePhase("won");
 
+        // Wait 5 seconds before continuing to the next puzzle/game over.
+        solvedPuzzleTimerRef.current = window.setTimeout(() => {
+          solvedPuzzleTimerRef.current = null;
 
-        /*
-         * Ha ez volt az utolsó kör, game over.
-         */
-        if (shouldEndGame) {
+          /*
+           * Ha ez volt az utolsó kör, game over.
+           */
+          if (shouldEndGame) {
+            setGameOverResult({
+              winnerName: currentPlayer.name,
+              prize,
+            });
 
-          setGameOverResult({
-            winnerName: currentPlayer.name,
-            prize,
-          });
+            setGamePhase("gameOver");
+            return;
+          }
 
-          setGamePhase("gameOver");
-          return;
-        }
+          /*
+           * Ellenkező esetben új puzzle indul.
+           */
+          setPuzzleData(getRandomPuzzle());
+          setGuessedLetters([]);
+          setGamePhase("spinning");
+        }, 5000);
 
-
-        /*
-         * Ellenkező esetben új puzzle indul.
-         */
-        setPuzzleData(getRandomPuzzle());
-        setGamePhase("spinning");
         return;
       }
 
@@ -1092,6 +1129,11 @@ export function useGame() {
     if (turnTimerRef.current !== null) {
       window.clearTimeout(turnTimerRef.current);
       turnTimerRef.current = null;
+    }
+
+    if (solvedPuzzleTimerRef.current !== null) {
+      window.clearTimeout(solvedPuzzleTimerRef.current);
+      solvedPuzzleTimerRef.current = null;
     }
 
 

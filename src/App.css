@@ -480,6 +480,14 @@ html,
   padding: 0.3vw 0.6vw;
 }
 
+.audio-toggle button.fullscreen-button {
+  width: 2.1vw;
+  height: 2.1vw;
+  padding: 0;
+  background-image: url(assets/fullscreen.png);
+  background-size: 100% 100%;
+}
+
 .spin-button:hover {
   
   background: #aaaaaa;
@@ -605,3 +613,4 @@ body {
     display: none;
   }
 }
+
