@@ -486,6 +486,7 @@ html,
   padding: 0;
   background-image: url(assets/fullscreen.png);
   background-size: 100% 100%;
+  color: transparent;
 }
 
 .spin-button:hover {

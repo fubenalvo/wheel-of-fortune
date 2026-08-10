@@ -270,7 +270,7 @@ function GameBoard() {
             </button>
             &nbsp;
             <button className="fullscreen-button" onClick={toggleFullscreen}>
-              &nbsp;
+              {isFullscreen ? ".": "."}
             </button>            
             <br/>
           </div>
