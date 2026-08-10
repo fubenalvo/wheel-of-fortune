@@ -460,6 +460,11 @@ html,
   transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
 }
 
+.audio-toggle button {
+  font-size: 1.55vw;
+  padding: 0.3vw 0.6vw;
+}
+
 .spin-button:hover {
   
   background: #aaaaaa;
@@ -572,4 +577,16 @@ body {
   font-size: 1.2vw;
   background-color: #000;
   color: #555;
+}
+
+@media (min-width: 2001px) {
+  .debug-phase {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .debug-phase {
+    display: none;
+  }
 }
