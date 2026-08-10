@@ -226,11 +226,6 @@ function GameBoard() {
 
 
         <div className="bottom-info">
-          <p>
-            Current spin value:
-            {" "}
-            {currentSpinValue}
-          </p>
 
 
         {gamePhase === "spinning" && !currentPlayer.computer && (
@@ -260,7 +255,7 @@ function GameBoard() {
 
 
 
-          <p>
+          <div>
           {gamePhase === "gameOver" && (
             <div className="spin-action">
               <button
@@ -283,10 +278,8 @@ function GameBoard() {
             </div>
           )}
 
-            Game phase:
-            {" "}
-            {gamePhase}
-          </p>
+
+          </div>
 
           {gamePhase === "won" && (
             <div>
@@ -309,6 +302,16 @@ function GameBoard() {
             </div>
           );
         })}
+      </div>
+
+      <div className="debug-phase">
+        Game phase:
+        {" "}
+        {gamePhase}
+          |
+        Current spin value:
+        {" "}
+        {currentSpinValue}
       </div>
     </div>
   );

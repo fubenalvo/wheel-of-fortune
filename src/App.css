@@ -551,3 +551,12 @@ body {
     opacity: 0;
   }
 }
+
+.debug-phase {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  font-size: 1.2vw;
+  background-color: #000;
+  color: #555;
+}
