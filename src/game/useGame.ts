@@ -48,6 +48,20 @@ const COMPUTER_LETTERS = [
   "V", "W", "X", "Y", "Z"
 ];
 
+/*
+ * A számítógép extra találati esélye a puzzle
+ * hátralévő betűinek száma alapján.
+ *
+ * 3 hiányzó betű: +10%
+ * 2 hiányzó betű: +30%
+ * 1 hiányzó betű: +60%
+ */
+const COMPUTER_HIT_BONUS_BY_MISSING_LETTERS = {
+  3: 0.10,
+  2: 0.30,
+  1: 0.60,
+};
+
 
 /*
  * Létrehozza a játék alapértelmezett játékosait.
@@ -412,7 +426,19 @@ export function useGame() {
     /*
      * Először eldöntjük, hogy a gép sikeres tippet akar-e.
      */
-    const hitProbability = getComputerHitChance(difficulty);
+    const baseHitProbability =
+      getComputerHitChance(difficulty);
+
+    const hitBonus =
+      COMPUTER_HIT_BONUS_BY_MISSING_LETTERS[
+        missingLetters.length as 1 | 2 | 3
+      ] ?? 0;
+
+    const hitProbability = Math.min(
+      1,
+      baseHitProbability + hitBonus
+    );
+
     const shouldHit = Math.random() < hitProbability;
 
     if (shouldHit) {
@@ -739,13 +765,22 @@ export function useGame() {
 
 
       /*
-       * Ha nem sikerült megfejteni a puzzle-t,
-       * a következő játékos következik.
-       */
+      * Ha helyes volt a betű, ugyanaz a játékos
+      * folytathatja a játékot és újra pörgethet.
+      */
+      if (amount > 0) {
+        setCurrentSpinValue(0);
+        setLastSpinResult(null);
+        setGamePhase("spinning");
+        return;
+      }
+
+      /*
+      * Ha rossz volt a betű, a következő játékos jön.
+      */
       setCurrentPlayerIndex(previousIndex =>
         (previousIndex + 1) % players.length
       );
-
       setCurrentSpinValue(0);
       setLastSpinResult(null);
       setGamePhase("spinning");
