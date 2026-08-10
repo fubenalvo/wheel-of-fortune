@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./Wheel.css";
+import wheelTickSound from "../assets/wheel-tick.ogg";
+import { useAudio } from "../components/AudioProvider";
 
 type WheelResult = { type: "money" | "bankrupt" | "halve" | "double"; value?: number };
 
@@ -46,6 +48,12 @@ function Wheel({
   const animationRef = useRef<number | null>(null);
   const autoSpinHandledRef = useRef(false);
   const manualSpinHandledRef = useRef(false);
+  const tickSoundRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    tickSoundRef.current = new Audio(wheelTickSound);
+    tickSoundRef.current.preload = "auto";
+  }, []);
 
   useEffect(() => {
     return () => {
@@ -54,6 +62,8 @@ function Wheel({
       }
     };
   }, []);
+
+  const { isMuted } = useAudio();
 
   const startSpin = useCallback((force = false) => {
     if ((!force && disabled) || isSpinning) {
@@ -74,6 +84,13 @@ function Wheel({
     const tick = () => {
       currentIndex = (currentIndex + 1) % wheelValues.length;
       setSelectedIndex(currentIndex);
+
+
+      if (!isMuted && tickSoundRef.current) {
+        tickSoundRef.current.currentTime = 0;
+        tickSoundRef.current.play().catch(() => {});
+      }
+
       step += 1;
 
       if (step < steps) {

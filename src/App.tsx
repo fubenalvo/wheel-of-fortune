@@ -1,6 +1,7 @@
 import './App.css'
 import { useEffect, useState } from 'react'
 import GameBoard from './components/GameBoard'
+import { AudioProvider } from './components/AudioProvider'
 
 function App() {
   const [isPortrait, setIsPortrait] = useState(false)
@@ -46,7 +47,9 @@ function App() {
       )}
 
       <div className={`game-wrapper ${isPortrait ? 'game-wrapper--hidden' : ''}`}>
-        <GameBoard />
+        <AudioProvider>
+          <GameBoard />
+        </AudioProvider>
       </div>
     </div>
   )

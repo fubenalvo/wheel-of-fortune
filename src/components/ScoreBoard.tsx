@@ -10,7 +10,7 @@ function ScoreBoard({ currentPlayer, players }: ScoreBoardProps) {
 
   return (
     <div className="scoreboard">
-      <h2>Játékosok</h2>
+      
       <table className="scoreboard-table">
         <thead>
           <tr>

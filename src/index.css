@@ -33,6 +33,8 @@
 
 button, input, select, textarea {
   font-family: "VT323", monospace;
+  border-radius: 0;
+  border: 0;
 }
 
 
@@ -103,6 +105,13 @@ h1.logo {
     -9px -9px 0 var(--c3),  9px -9px 0 var(--c3), -9px  9px 0 var(--c3),  9px  9px 0 var(--c3);
 
   animation: vegas-border 1.0s steps(1) infinite;
+}
+
+@media (max-width: 900px) {
+  h1.logo {
+    
+    transform: scale(0.8);
+  }
 }
 
 /* Az animációban ELÉG CSAK A VÁLTOZÓKAT FELCSERÉLNI! */

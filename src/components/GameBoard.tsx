@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useGame } from "../game/useGame";
+import { useAudio } from "../components/AudioProvider";
+
 import Keyboard from "./Keyboard";
 import Puzzle from "./Puzzle";
 import GameOver from "./GameOver";
@@ -11,6 +13,14 @@ function GameBoard() {
   const [solveGuess, setSolveGuess] = useState("");
   const [manualSpinRequest, setManualSpinRequest] = useState(false);
   const [isWheelSpinning, setIsWheelSpinning] = useState(false);
+
+  const {
+    isMuted,
+    isMusicMuted,
+    toggleMute,
+    toggleMusic,
+    playBeep,
+  } = useAudio();
 
   const {
     players,
@@ -48,7 +58,6 @@ function GameBoard() {
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
-
       // Handle Enter and Space as game action buttons
       if (event.key === "Enter") {
         event.preventDefault();
@@ -61,6 +70,7 @@ function GameBoard() {
           !currentPlayer.computer
         ) {
           restartGame();
+          playBeep();
           return;
         }
 
@@ -70,6 +80,7 @@ function GameBoard() {
           !currentPlayer.computer
         ) {
           setManualSpinRequest(true);
+          playBeep();
           return;
         }
 
@@ -81,12 +92,13 @@ function GameBoard() {
         ) {
           attemptSolve(solveGuess);
           setSolveGuess("");
+          playBeep();
           return;
         }
 
         return;
       }
-      
+
       // Ignore keyboard shortcuts when typing into a form field
       const target = event.target as HTMLElement;
 
@@ -122,6 +134,7 @@ function GameBoard() {
 
       // Use the same logic as clicking a letter on the on-screen keyboard
       guessLetter(letter);
+      playBeep();
     }
 
     window.addEventListener("keydown", handleKeyDown);
@@ -135,7 +148,8 @@ function GameBoard() {
     currentPlayer.computer,
     solveGuess,
     attemptSolve,
-    restartGame
+    restartGame,
+    playBeep
   ]);
 
   function handleSolve() {
@@ -145,6 +159,7 @@ function GameBoard() {
 
   const shouldAutoSpin =
     currentPlayer.computer && gamePhase === "spinning";
+
   const displayedDifficulty = Math.min(
     Math.max(difficulty, 1),
     difficultyLevels.length
@@ -152,11 +167,14 @@ function GameBoard() {
 
   return (
     <div className="game-board">
-      
+
       <div className="side-column left-column">
         <Wheel
           onSpinResult={handleSpin}
-          disabled={gamePhase !== "spinning" || currentPlayer.computer}
+          disabled={
+            gamePhase !== "spinning" ||
+            currentPlayer.computer
+          }
           lastResult={lastSpinResult}
           autoSpin={shouldAutoSpin}
           manualSpinRequest={manualSpinRequest}
@@ -164,161 +182,221 @@ function GameBoard() {
           onSpinningChange={setIsWheelSpinning}
           showButton={false}
         />
-
       </div>
+
       <div className="main-column">
+
         <div className="main-column-left">
-          {gamePhase != "gameOver" && (
-            <h1 className="logo">szerencsekerék</h1>  
-          )}
 
-          {gamePhase == "starting" && (
-            <StartingScreen 
-              players={players}
-              setPlayers={setPlayers}            />
-          )}
-
-
-          {gamePhase !== "starting" && (
-          <div className="puzzle-positioner">
-            <div className="puzzle-positioner-helper">
-              {gamePhase === "gameOver" && gameOverResult ? (
-                <GameOver
-                  players={players}
-                />
-              ) : null}
-              {gamePhase !== "gameOver" && (
-                <>
-                <p className="puzzle-category">
-                Kategória: {category}
-              </p>
-              <Puzzle
-                word={puzzle}
-                guessedLetters={guessedLetters}
-              />   
-                </>
-              )}
-            </div>
-          </div>
-          )} 
-
-
-
-        </div>
-        <div className="main-column-right">
-          <ScoreBoard
-            currentPlayer={currentPlayer}
-            players={players}
-          />          
-        </div>
-
-        <div className="keyboard-letters">
-          {gamePhase !== "won" && gamePhase !== "waiting" && gamePhase !== "gameOver" && (
-            <Keyboard
-              onLetterClick={guessLetter}
-              usedLetters={guessedLetters}
-
-              // Disable keyboard until the wheel has been spun or if the computer is playing
-              disabled={
-                gamePhase !== "guessing" || currentPlayer.computer
-              }
-            />
-          )}
-        </div>
-
-
-        <div className="bottom-info">
-
-
-        {gamePhase === "spinning" && !currentPlayer.computer && (
-          <div className="spin-action">
-            <button
-              className="spin-button"
-              disabled={isWheelSpinning}
-              onClick={() => setManualSpinRequest(true)}
-            >
-                {isWheelSpinning ? "Pörgetés..." : "Pörgetés"}
-            </button>
-          </div>
-        )}
-
-          {gamePhase === "guessing" && !currentPlayer.computer && (
-            <div className="solve-guess">
-              <input
-                type="text"
-                value={solveGuess}
-                onChange={event => setSolveGuess(event.target.value)}
-                placeholder="Írd be a megfejtést"
-              />
-              <button onClick={handleSolve} disabled={!solveGuess.trim()}>
-                Megfejtés
-              </button>
-            </div>
-          )}
-
-
-
-          <div>
-          {gamePhase === "gameOver" && (
-            <div className="spin-action">
-              <button
-                className="spin-button"
-                onClick={restartGame}
-              >
-                Új játék
-              </button>
-            </div>
+          {gamePhase !== "gameOver" && (
+            <h1 className="logo">
+              szerencsekerék
+            </h1>
           )}
 
           {gamePhase === "starting" && (
-            <div className="spin-action">
-              <button
-                className="spin-button"
-                onClick={restartGame}
-              >
-                Új játék
-              </button>
+            <StartingScreen
+              players={players}
+              setPlayers={setPlayers}
+            />
+          )}
+
+          {gamePhase !== "starting" && (
+            <div className="puzzle-positioner">
+              <div className="puzzle-positioner-helper">
+
+                {gamePhase === "gameOver" && gameOverResult ? (
+                  <GameOver
+                    players={players}
+                  />
+                ) : null}
+
+                {gamePhase !== "gameOver" && (
+                  <>
+                    <p className="puzzle-category">
+                      Kategória: {category}
+                    </p>
+
+                    <Puzzle
+                      word={puzzle}
+                      guessedLetters={guessedLetters}
+                    />
+                  </>
+                )}
+
+              </div>
             </div>
           )}
 
+        </div>
+
+        <div className="main-column-right">
+
+          {/* Audio toggle above the player list */}
+          <div className="audio-toggle">
+            <button onClick={toggleMute}>
+              {isMuted ? "Hangok BE" : "Hangok KI"}
+            </button>
+            &nbsp;
+            <button onClick={toggleMusic}>
+              {isMusicMuted ? "Zene BE" : "Zene KI"}
+            </button>
+            <br/>
+          </div>
+
+          <ScoreBoard
+            currentPlayer={currentPlayer}
+            players={players}
+          />
+
+        </div>
+
+        <div className="keyboard-letters">
+
+          {gamePhase !== "won" &&
+            gamePhase !== "waiting" &&
+            gamePhase !== "gameOver" && (
+              <Keyboard
+                onLetterClick={guessLetter}
+                usedLetters={guessedLetters}
+
+                // Disable keyboard until the wheel has been spun or if the computer is playing
+                disabled={
+                  gamePhase !== "guessing" ||
+                  currentPlayer.computer
+                }
+              />
+            )}
+
+        </div>
+
+        <div className="bottom-info">
+
+          {gamePhase === "spinning" &&
+            !currentPlayer.computer && (
+              <div className="spin-action">
+                <button
+                  className="spin-button"
+                  disabled={isWheelSpinning}
+                  onClick={() => {
+                    playBeep();
+                    setManualSpinRequest(true);
+                  }}
+                >
+                  {isWheelSpinning
+                    ? "Pörgetés..."
+                    : "Pörgetés"}
+                </button>
+              </div>
+            )}
+
+          {gamePhase === "guessing" &&
+            !currentPlayer.computer && (
+              <div className="solve-guess">
+                <input
+                  type="text"
+                  value={solveGuess}
+                  onChange={event =>
+                    setSolveGuess(event.target.value)
+                  }
+                  placeholder="Írd be a megfejtést"
+                />
+
+                <button
+                  onClick={() => {
+                    playBeep();
+                    handleSolve();
+                  }}
+                  disabled={!solveGuess.trim()}
+                >
+                  Megfejtés
+                </button>
+              </div>
+            )}
+
+          <div>
+
+            {gamePhase === "gameOver" && (
+              <div className="spin-action">
+                <button
+                  className="spin-button"
+                  onClick={() => {
+                    playBeep();
+                    restartGame();
+                  }}
+                >
+                  Új játék
+                </button>
+              </div>
+            )}
+
+            {gamePhase === "starting" && (
+              <div className="spin-action">
+                <button
+                  className="spin-button"
+                  onClick={() => {
+                    playBeep();
+                    restartGame();
+                  }}
+                >
+                  Új játék
+                </button>
+              </div>
+            )}
 
           </div>
 
           {gamePhase === "won" && (
             <div>
               <h2>Vége a játéknak!</h2>
-              <button onClick={restartGame}>Új játék</button>
+
+              <button
+                onClick={() => {
+                  playBeep();
+                  restartGame();
+                }}
+              >
+                Új játék
+              </button>
             </div>
           )}
+
         </div>
       </div>
 
       <div className="side-column right-column difficulty-sidebar">
+
         {difficultyLevels.map((label, index) => {
           const level = index + 1;
+
           return (
             <div
               key={label}
-              className={`side-column-item level-${level} ${displayedDifficulty === level ? "selected" : ""}`}
+              className={`side-column-item level-${level} ${
+                displayedDifficulty === level
+                  ? "selected"
+                  : ""
+              }`}
             >
               {label}
             </div>
           );
         })}
+
       </div>
 
       <div className="debug-phase">
         Game phase:
         {" "}
         {gamePhase}
-          |
+        |
         Current spin value:
         {" "}
         {currentSpinValue}
       </div>
+
     </div>
   );
 }
-
 
 export default GameBoard;

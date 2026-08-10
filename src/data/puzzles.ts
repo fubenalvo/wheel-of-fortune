@@ -31,11 +31,6 @@ export const puzzles: Puzzle[] = [
 
   {
     category: "Videójátékok",
-    text: "TETRIS"
-  },
-
-  {
-    category: "Videójátékok",
     text: "CYBERPUNK"
   },
 
@@ -71,17 +66,7 @@ export const puzzles: Puzzle[] = [
 
   {
     category: "Videójátékok",
-    text: "SKYRIM"
-  },
-
-  {
-    category: "Videójátékok",
     text: "HALF LIFE"
-  },
-
-  {
-    category: "Videójátékok",
-    text: "PORTAL"
   },
 
   {
@@ -111,22 +96,12 @@ export const puzzles: Puzzle[] = [
 
   {
     category: "Videójátékok",
-    text: "DIABLO"
-  },
-
-  {
-    category: "Videójátékok",
     text: "ASSASSINS CREED"
   },
 
   {
     category: "Videójátékok",
     text: "RESIDENT EVIL"
-  },
-
-  {
-    category: "Videójátékok",
-    text: "PAC MAN"
   },
 
   {
@@ -296,22 +271,12 @@ export const puzzles: Puzzle[] = [
 
   {
     category: "Filmek",
-    text: "MÁTRIX"
-  },
-
-  {
-    category: "Filmek",
     text: "FORREST GUMP"
   },
 
   {
     category: "Filmek",
     text: "CSILLAGOK KÖZÖTT"
-  },
-
-  {
-    category: "Filmek",
-    text: "AVATAR"
   },
 
   {
@@ -337,11 +302,6 @@ export const puzzles: Puzzle[] = [
   {
     category: "Filmek",
     text: "GLADIÁTOR"
-  },
-
-  {
-    category: "Filmek",
-    text: "EREDET"
   },
 
   {
@@ -391,17 +351,7 @@ export const puzzles: Puzzle[] = [
 
   {
     category: "Filmek",
-    text: "SHREK"
-  },
-
-  {
-    category: "Filmek",
     text: "AZ OROSZLÁNKIRÁLY"
-  },
-
-  {
-    category: "Filmek",
-    text: "WALL E"
   },
 
   {
@@ -412,11 +362,6 @@ export const puzzles: Puzzle[] = [
   {
     category: "Filmek",
     text: "A HIHETETLEN CSALÁD"
-  },
-
-  {
-    category: "Filmek",
-    text: "COCO"
   },
 
   {
@@ -456,11 +401,6 @@ export const puzzles: Puzzle[] = [
 
   {
     category: "Filmek",
-    text: "TRÓJA"
-  },
-
-  {
-    category: "Filmek",
     text: "A NAGY LEBOWSKI"
   },
 
@@ -482,11 +422,6 @@ export const puzzles: Puzzle[] = [
   {
     category: "Filmek",
     text: "MACSKAFOGÓ"
-  },
-
-  {
-    category: "Filmek",
-    text: "A TANÚ"
   },
 
   {
@@ -761,27 +696,7 @@ export const puzzles: Puzzle[] = [
 
   {
     category: "Márkanév",
-    text: "LEGO"
-  },
-
-  {
-    category: "Márkanév",
     text: "NINTENDO"
-  },
-
-  {
-    category: "Márkanév",
-    text: "SONY"
-  },
-
-  {
-    category: "Márkanév",
-    text: "APPLE"
-  },
-
-  {
-    category: "Márkanév",
-    text: "GOOGLE"
   },
 
   {
@@ -791,42 +706,12 @@ export const puzzles: Puzzle[] = [
 
   {
     category: "Márkanév",
-    text: "TOYOTA"
-  },
-
-  {
-    category: "Márkanév",
     text: "MERCEDES BENZ"
   },
 
   {
     category: "Márkanév",
-    text: "AUDI"
-  },
-
-  {
-    category: "Márkanév",
     text: "COCA COLA"
-  },
-
-  {
-    category: "Márkanév",
-    text: "PEPSI"
-  },
-
-  {
-    category: "Márkanév",
-    text: "ADIDAS"
-  },
-
-  {
-    category: "Márkanév",
-    text: "NIKE"
-  },
-
-  {
-    category: "Márkanév",
-    text: "PUMA"
   },
 
   {
@@ -841,11 +726,6 @@ export const puzzles: Puzzle[] = [
 
   {
     category: "Márkanév",
-    text: "BOSCH"
-  },
-
-  {
-    category: "Márkanév",
     text: "SIEMENS"
   },
 
@@ -856,22 +736,7 @@ export const puzzles: Puzzle[] = [
 
   {
     category: "Márkanév",
-    text: "IKEA"
-  },
-
-  {
-    category: "Márkanév",
     text: "NUTELLA"
-  },
-
-  {
-    category: "Márkanév",
-    text: "MILKA"
-  },
-
-  {
-    category: "Márkanév",
-    text: "HARIBO"
   },
 
   {
@@ -882,26 +747,6 @@ export const puzzles: Puzzle[] = [
   {
     category: "Márkanév",
     text: "NESPRESSO"
-  },
-
-  {
-    category: "Márkanév",
-    text: "CANON"
-  },
-
-  {
-    category: "Márkanév",
-    text: "NIKON"
-  },
-
-  {
-    category: "Márkanév",
-    text: "YAMAHA"
-  },
-
-  {
-    category: "Márkanév",
-    text: "HONDA"
   },
 
   {
@@ -921,21 +766,6 @@ export const puzzles: Puzzle[] = [
 
   {
     category: "Márkanév",
-    text: "ROLEX"
-  },
-
-  {
-    category: "Márkanév",
-    text: "RAY BAN"
-  },
-
-  {
-    category: "Márkanév",
-    text: "CASIO"
-  },
-
-  {
-    category: "Márkanév",
     text: "LOGITECH"
   },
 
@@ -946,42 +776,12 @@ export const puzzles: Puzzle[] = [
 
   {
     category: "Márkanév",
-    text: "PICK"
-  },
-
-  {
-    category: "Márkanév",
-    text: "UNICUM"
-  },
-
-  {
-    category: "Márkanév",
-    text: "DREHER"
-  },
-
-  {
-    category: "Márkanév",
     text: "HELL ENERGY"
   },
 
   {
     category: "Márkanév",
-    text: "NIVEA"
-  },
-
-  {
-    category: "Márkanév",
-    text: "DOVE"
-  },
-
-  {
-    category: "Márkanév",
     text: "GILLETTE"
-  },
-
-  {
-    category: "Márkanév",
-    text: "SWATCH"
   },
 
   {
@@ -995,18 +795,8 @@ export const puzzles: Puzzle[] = [
   },
 
   {
-    category: "Márkanév",
-    text: "PANINI"
-  },
-
-  {
     category: "Tárgy",
     text: "OKOSTELEFON"
-  },
-
-  {
-    category: "Tárgy",
-    text: "LAPTOP"
   },
 
   {
@@ -1017,11 +807,6 @@ export const puzzles: Puzzle[] = [
   {
     category: "Tárgy",
     text: "NAPSZEMÜVEG"
-  },
-
-  {
-    category: "Tárgy",
-    text: "KARÓRA"
   },
 
   {
@@ -1131,42 +916,12 @@ export const puzzles: Puzzle[] = [
 
   {
     category: "Tárgy",
-    text: "VÁZA"
-  },
-
-  {
-    category: "Tárgy",
-    text: "TÜKÖR"
-  },
-
-  {
-    category: "Tárgy",
     text: "GÖRDESZKA"
   },
 
   {
     category: "Tárgy",
-    text: "SÍLÉC"
-  },
-
-  {
-    category: "Tárgy",
-    text: "GITÁR"
-  },
-
-  {
-    category: "Tárgy",
     text: "ZONGORA"
-  },
-
-  {
-    category: "Tárgy",
-    text: "HEGEDŰ"
-  },
-
-  {
-    category: "Tárgy",
-    text: "TÁVCSŐ"
   },
 
   {
@@ -1211,17 +966,7 @@ export const puzzles: Puzzle[] = [
 
   {
     category: "Tárgy",
-    text: "ROBOGÓ"
-  },
-
-  {
-    category: "Tárgy",
     text: "BUKÓSISAK"
-  },
-
-  {
-    category: "Tárgy",
-    text: "LÁMPA"
   },
 
   {
@@ -1237,11 +982,6 @@ export const puzzles: Puzzle[] = [
   {
     category: "Tárgy",
     text: "OKOSÓRA"
-  },
-
-  {
-    category: "Tárgy",
-    text: "HŐMÉRŐ"
   },
 
   {
@@ -1276,37 +1016,7 @@ export const puzzles: Puzzle[] = [
 
   {
     category: "Földrajzi név",
-    text: "MÁTRA"
-  },
-
-  {
-    category: "Földrajzi név",
-    text: "BÜKK"
-  },
-
-  {
-    category: "Földrajzi név",
-    text: "TIHANY"
-  },
-
-  {
-    category: "Földrajzi név",
     text: "VISEGRÁD"
-  },
-
-  {
-    category: "Földrajzi név",
-    text: "EGER"
-  },
-
-  {
-    category: "Földrajzi név",
-    text: "SZEGED"
-  },
-
-  {
-    category: "Földrajzi név",
-    text: "PÉCS"
   },
 
   {
@@ -1316,47 +1026,7 @@ export const puzzles: Puzzle[] = [
 
   {
     category: "Földrajzi név",
-    text: "SOPRON"
-  },
-
-  {
-    category: "Földrajzi név",
-    text: "TOKAJ"
-  },
-
-  {
-    category: "Földrajzi név",
-    text: "ALPOK"
-  },
-
-  {
-    category: "Földrajzi név",
     text: "KÁRPÁTOK"
-  },
-
-  {
-    category: "Földrajzi név",
-    text: "DUNA"
-  },
-
-  {
-    category: "Földrajzi név",
-    text: "TISZA"
-  },
-
-  {
-    category: "Földrajzi név",
-    text: "EURÓPA"
-  },
-
-  {
-    category: "Földrajzi név",
-    text: "ÁZSIA"
-  },
-
-  {
-    category: "Földrajzi név",
-    text: "AFRIKA"
   },
 
   {
@@ -1367,16 +1037,6 @@ export const puzzles: Puzzle[] = [
   {
     category: "Földrajzi név",
     text: "ANTARKTISZ"
-  },
-
-  {
-    category: "Földrajzi név",
-    text: "IZLAND"
-  },
-
-  {
-    category: "Földrajzi név",
-    text: "JAPÁN"
   },
 
   {
@@ -1406,11 +1066,6 @@ export const puzzles: Puzzle[] = [
 
   {
     category: "Földrajzi név",
-    text: "KANADA"
-  },
-
-  {
-    category: "Földrajzi név",
     text: "BRAZÍLIA"
   },
 
@@ -1421,32 +1076,7 @@ export const puzzles: Puzzle[] = [
 
   {
     category: "Földrajzi név",
-    text: "RÓMA"
-  },
-
-  {
-    category: "Földrajzi név",
-    text: "PÁRIZS"
-  },
-
-  {
-    category: "Földrajzi név",
-    text: "LONDON"
-  },
-
-  {
-    category: "Földrajzi név",
     text: "NEW YORK"
-  },
-
-  {
-    category: "Földrajzi név",
-    text: "TOKIÓ"
-  },
-
-  {
-    category: "Földrajzi név",
-    text: "SYDNEY"
   },
 
   {
@@ -1492,11 +1122,6 @@ export const puzzles: Puzzle[] = [
   {
     category: "Földrajzi név",
     text: "FINNORSZÁG"
-  },
-
-  {
-    category: "Földrajzi név",
-    text: "SVÁJC"
   },
 
   {
@@ -1739,7 +1364,516 @@ export const puzzles: Puzzle[] = [
     text: "VÁROSTERVEZÉS"
   },
 
+  // ===== ÚJ FELADVÁNYOK =====
 
+  {
+    category: "Sorozatok",
+    text: "STRANGER THINGS"
+  },
 
+  {
+    category: "Sorozatok",
+    text: "BREAKING BAD"
+  },
+
+  {
+    category: "Sorozatok",
+    text: "GAME OF THRONES"
+  },
+
+  {
+    category: "Sorozatok",
+    text: "THE LAST OF US"
+  },
+
+  {
+    category: "Sorozatok",
+    text: "THE WALKING DEAD"
+  },
+
+  {
+    category: "Sorozatok",
+    text: "SQUID GAME"
+  },
+
+  {
+    category: "Sorozatok",
+    text: "PEAKY BLINDERS"
+  },
+
+  {
+    category: "Sorozatok",
+    text: "BLACK MIRROR"
+  },
+
+  {
+    category: "Sorozatok",
+    text: "HOUSE OF THE DRAGON"
+  },
+
+  {
+    category: "Sorozatok",
+    text: "MONEY HEIST"
+  },
+
+  {
+    category: "Sorozatok",
+    text: "BETTER CALL SAUL"
+  },
+
+  {
+    category: "Sorozatok",
+    text: "THE BIG BANG THEORY"
+  },
+
+  {
+    category: "Sorozatok",
+    text: "HOW I MET YOUR MOTHER"
+  },
+
+  {
+    category: "Sorozatok",
+    text: "THE MANDALORIAN"
+  },
+
+  {
+    category: "Sorozatok",
+    text: "THE BOYS"
+  },
+
+  {
+    category: "Sorozatok",
+    text: "BRIDGERTON"
+  },
+
+  {
+    category: "Sorozatok",
+    text: "CHERNOBYL"
+  },
+
+  {
+    category: "Sorozatok",
+    text: "THE OFFICE"
+  },
+
+  {
+    category: "Sorozatok",
+    text: "VIKINGEK"
+  },
+
+  {
+    category: "Sorozatok",
+    text: "AGYMENŐK"
+  },
+
+  {
+    category: "Sorozatok",
+    text: "SZÍVEK SZÁLLODÁJA"
+  },
+
+  {
+    category: "Sorozatok",
+    text: "A MI KIS FALUNK"
+  },
+
+  {
+    category: "Sorozatok",
+    text: "ARANYÉLET"
+  },
+
+  {
+    category: "Sorozatok",
+    text: "TERÁPIA"
+  },
+
+  {
+    category: "Sorozatok",
+    text: "A NAGY PÉNZRABLÁS"
+  },
+
+  {
+    category: "Sorozatok",
+    text: "THE QUEENS GAMBIT"
+  },
+
+  {
+    category: "Sorozatok",
+    text: "THE UMBRELLA ACADEMY"
+  },
+
+  {
+    category: "Sorozatok",
+    text: "ONLY MURDERS IN THE BUILDING"
+  },
+
+  {
+    category: "Sorozatok",
+    text: "THE LAST KINGDOM"
+  },
+
+  {
+    category: "Sorozatok",
+    text: "SUCCESSION"
+  },
+
+  {
+    category: "Turista célpontok",
+    text: "EIFFEL TORONY"
+  },
+
+  {
+    category: "Turista célpontok",
+    text: "COLOSSEUM"
+  },
+
+  {
+    category: "Turista célpontok",
+    text: "SAGRADA FAMILIA"
+  },
+
+  {
+    category: "Turista célpontok",
+    text: "BUCKINGHAM PALOTA"
+  },
+
+  {
+    category: "Turista célpontok",
+    text: "BRÜSSZELI ATOMIUM"
+  },
+
+  {
+    category: "Turista célpontok",
+    text: "STATUE OF LIBERTY"
+  },
+
+  {
+    category: "Turista célpontok",
+    text: "EMPIRE STATE BUILDING"
+  },
+
+  {
+    category: "Turista célpontok",
+    text: "CENTRAL PARK"
+  },
+
+  {
+    category: "Turista célpontok",
+    text: "TIMES SQUARE"
+  },
+
+  {
+    category: "Turista célpontok",
+    text: "DISNEYLAND PARIS"
+  },
+
+  {
+    category: "Turista célpontok",
+    text: "UNIVERSAL STUDIOS"
+  },
+
+  {
+    category: "Turista célpontok",
+    text: "GRAND CANYON"
+  },
+
+  {
+    category: "Turista célpontok",
+    text: "LAS VEGAS STRIP"
+  },
+
+  {
+    category: "Turista célpontok",
+    text: "GOLDEN GATE BRIDGE"
+  },
+
+  {
+    category: "Turista célpontok",
+    text: "NIAGARA VÍZESÉS"
+  },
+
+  {
+    category: "Turista célpontok",
+    text: "MACHU PICCHU"
+  },
+
+  {
+    category: "Turista célpontok",
+    text: "CHICHEN ITZA"
+  },
+
+  {
+    category: "Turista célpontok",
+    text: "TAJ MAHAL"
+  },
+
+  {
+    category: "Turista célpontok",
+    text: "BURDZ KHALIFA"
+  },
+
+  {
+    category: "Turista célpontok",
+    text: "SYDNEYI OPERAHÁZ"
+  },
+
+  {
+    category: "Turista célpontok",
+    text: "SANTORINI SZIGETE"
+  },
+
+  {
+    category: "Turista célpontok",
+    text: "BALEÁRI SZIGETEK"
+  },
+
+  {
+    category: "Turista célpontok",
+    text: "KANÁRI SZIGETEK"
+  },
+
+  {
+    category: "Turista célpontok",
+    text: "AMALFI PARTVIDÉK"
+  },
+
+  {
+    category: "Turista célpontok",
+    text: "COSTA RICA"
+  },
+
+  {
+    category: "Turista célpontok",
+    text: "MALDÍV SZIGETEK"
+  },
+
+  {
+    category: "Turista célpontok",
+    text: "DUBROVNIK ÓVÁROSA"
+  },
+
+  {
+    category: "Turista célpontok",
+    text: "PLITVICEI TAVAK"
+  },
+
+  {
+    category: "Együttesek",
+    text: "CARSON COMA"
+  },
+
+  {
+    category: "Együttesek",
+    text: "BLAHALOUISIANA"
+  },
+
+  {
+    category: "Együttesek",
+    text: "BAGOSSY BROTHERS COMPANY"
+  },
+
+  {
+    category: "Együttesek",
+    text: "WELLHELLO"
+  },
+
+  {
+    category: "Együttesek",
+    text: "PUNNANY MASSIF"
+  },
+
+  {
+    category: "Együttesek",
+    text: "BOHEMIAN BETYARS"
+  },
+
+  {
+    category: "Együttesek",
+    text: "HALOTT PÉNZ"
+  },
+
+  {
+    category: "Együttesek",
+    text: "TANKCSAPDA"
+  },
+
+  {
+    category: "Együttesek",
+    text: "IRIE MAFFIA"
+  },
+
+  {
+    category: "Együttesek",
+    text: "FOLLOW THE FLOW"
+  },
+
+  {
+    category: "Együttesek",
+    text: "MARGARET ISLAND"
+  },
+
+  {
+    category: "Együttesek",
+    text: "AZAHRIAH"
+  },
+
+  {
+    category: "Együttesek",
+    text: "ELEFÁNT"
+  },
+
+  {
+    category: "Együttesek",
+    text: "VAD FRUTTIK"
+  },
+
+  {
+    category: "Együttesek",
+    text: "KISPÁL ÉS A BORZ"
+  },
+
+  {
+    category: "Együttesek",
+    text: "HIPERKARMA"
+  },
+
+  {
+    category: "Együttesek",
+    text: "IVAN AND THE PARAZOL"
+  },
+
+  {
+    category: "Együttesek",
+    text: "AUREVOIR"
+  },
+
+  {
+    category: "Együttesek",
+    text: "HONEYBEAST"
+  },
+
+  {
+    category: "Együttesek",
+    text: "ESTI KORNÉL"
+  },
+
+  {
+    category: "Együttesek",
+    text: "INTIM TORNA ILLEGÁL"
+  },
+
+  {
+    category: "Együttesek",
+    text: "RICSÁRDGÍR"
+  },
+
+  {
+    category: "Együttesek",
+    text: "MAGNA CUM LAUDE"
+  },
+
+  {
+    category: "Együttesek",
+    text: "KOWALSKY MEG A VEGA"
+  },
+
+  {
+    category: "Együttesek",
+    text: "IMAGINE DRAGONS"
+  },
+
+  {
+    category: "Együttesek",
+    text: "COLDPLAY"
+  },
+
+  {
+    category: "Együttesek",
+    text: "LINKIN PARK"
+  },
+
+  {
+    category: "Együttesek",
+    text: "FOO FIGHTERS"
+  },
+
+  {
+    category: "Együttesek",
+    text: "RED HOT CHILI PEPPERS"
+  },
+
+  {
+    category: "Együttesek",
+    text: "ARCTIC MONKEYS"
+  },
+
+  {
+    category: "Együttesek",
+    text: "TWENTY ONE PILOTS"
+  },
+
+  {
+    category: "Együttesek",
+    text: "ONEREPUBLIC"
+  },
+
+  {
+    category: "Együttesek",
+    text: "GREEN DAY"
+  },
+
+  {
+    category: "Együttesek",
+    text: "METALLICA"
+  },
+
+  {
+    category: "Együttesek",
+    text: "RAMMSTEIN"
+  },
+
+  {
+    category: "Együttesek",
+    text: "DEPECHE MODE"
+  },
+
+  {
+    category: "Együttesek",
+    text: "THE BEATLES"
+  },
+
+  {
+    category: "Együttesek",
+    text: "THE ROLLING STONES"
+  },
+
+  {
+    category: "Együttesek",
+    text: "NIRVANA"
+  },
+
+  {
+    category: "Együttesek",
+    text: "GUNS N ROSES"
+  },
+
+  {
+    category: "Együttesek",
+    text: "DAFT PUNK"
+  },
+
+  {
+    category: "Együttesek",
+    text: "THE KILLERS"
+  },
+
+  {
+    category: "Együttesek",
+    text: "BLACK SABBATH"
+  },
+
+  {
+    category: "Fogalom",
+    text: "KVANTUMSZÁMÍTÓGÉP"
+  },
 
 ];

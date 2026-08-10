@@ -1,3 +1,6 @@
+import { useEffect, useRef } from "react";
+import beepSound from "../assets/beep-a.ogg";
+
 type KeyboardProps = {
   onLetterClick: (letter: string) => void;
   usedLetters: string[];
@@ -15,7 +18,22 @@ const letters = [
 ];
 
 
+
+
 function Keyboard({ onLetterClick, usedLetters, disabled }: KeyboardProps) {
+  const beepSoundRef = useRef<HTMLAudioElement | null>(null);
+  
+  useEffect(() => {
+    beepSoundRef.current = new Audio(beepSound);
+    beepSoundRef.current.preload = "auto";
+  }, []);
+
+  function sfxBeep() {
+      if (beepSoundRef.current) {
+        beepSoundRef.current.currentTime = 0;
+        beepSoundRef.current.play().catch(() => {});
+      }    
+  }
 
   return (
     <div>
@@ -25,7 +43,9 @@ function Keyboard({ onLetterClick, usedLetters, disabled }: KeyboardProps) {
           key={letter}
           className={usedLetters.includes(letter) ? "already-used" : ""}
           disabled={disabled || usedLetters.includes(letter)}
-          onClick={() => onLetterClick(letter)}
+          onClick={() => {
+            sfxBeep();
+            onLetterClick(letter);}}
         >
           {letter}
         </button>

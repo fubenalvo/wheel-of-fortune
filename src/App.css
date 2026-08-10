@@ -270,6 +270,13 @@ html,
   margin-bottom: 1vw;
 }
 
+@media (max-width: 900px) {
+  .puzzle-category {
+    margin-bottom: 0.2vw;
+    margin-top: -0.6vw;
+  }
+}
+
 .puzzle-letter {
   display: inline-block;
   font-size: 2.0vw;
