@@ -19,10 +19,13 @@ function GameOver({ players }: GameOverProps) {
 
     const [topScores, setTopScores] = useState<Score[]>([]);
     const [scoresSubmitted, setScoresSubmitted] = useState(false);
+    const [loadingTopScores, setLoadingTopScores] = useState(true);
 
     async function loadTopScores() {
+        setLoadingTopScores(true);
+
         try {
-            const response = await fetch(`${API_URL}/api/scores/top`)
+            const response = await fetch(`${API_URL}/api/scores/top`);
 
             if (!response.ok) {
                 throw new Error(`Server returned ${response.status}`);
@@ -37,6 +40,9 @@ function GameOver({ players }: GameOverProps) {
                 "Score server is not available. Continuing without leaderboard.",
                 error
             );
+
+        } finally {
+            setLoadingTopScores(false);
         }
     }
 
@@ -47,17 +53,16 @@ function GameOver({ players }: GameOverProps) {
 
         for (const player of humanPlayers) {
             try {
-                const response = await fetch( `${API_URL}/api/scores`, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            name: player.name,
-                            score: player.sum
-                        })
-                    }
-                );
+                const response = await fetch(`${API_URL}/api/scores`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        name: player.name,
+                        score: player.sum
+                    })
+                });
 
                 if (!response.ok) {
                     throw new Error(
@@ -84,31 +89,7 @@ function GameOver({ players }: GameOverProps) {
     }
 
     useEffect(() => {
-        async function loadScores() {
-            try {
-                const response = await fetch(
-                    "http://localhost:3001/api/scores/top"
-                );
-
-                if (!response.ok) {
-                    throw new Error(
-                        `Server returned ${response.status}`
-                    );
-                }
-
-                const data = await response.json();
-
-                setTopScores(data);
-
-            } catch (error) {
-                console.warn(
-                    "Score server is not available. Continuing without leaderboard.",
-                    error
-                );
-            }
-        }
-
-        loadScores();
+        loadTopScores();
     }, []);
 
     return (
@@ -142,14 +123,24 @@ function GameOver({ players }: GameOverProps) {
             <h2 className="topscore-title">ONLINE TOP 10</h2>
 
             <div className="topscore-grid">
-                {topScores.map((score, index) => (
-                    <div
-                        className="topscore-player"
-                        key={score._id}
-                    >
-                        <div>{index + 1}.</div><div>{score.name}</div><div>{score.score}</div>
+
+                {loadingTopScores ? (
+                    <div className="topscore-loading">
+                        TOPLISTA BETÖLTÉSE<span className="loading-dots">...</span>
                     </div>
-                ))}
+                ) : (
+                    topScores.map((score, index) => (
+                        <div
+                            className="topscore-player"
+                            key={score._id}
+                        >
+                            <div>{index + 1}.</div>
+                            <div>{score.name}</div>
+                            <div>{score.score}</div>
+                        </div>
+                    ))
+                )}
+
             </div>
 
         </div>
@@ -157,4 +148,3 @@ function GameOver({ players }: GameOverProps) {
 }
 
 export default GameOver;
-

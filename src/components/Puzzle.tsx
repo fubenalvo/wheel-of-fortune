@@ -4,25 +4,21 @@ type PuzzleProps = {
 };
 
 function Puzzle({ word, guessedLetters }: PuzzleProps) {
-
   return (
-    <div className="puzzle-container">
-      {word.split("").map((letter, index) => {
+    <div>
+      {word.split(" ").map((wordPart, wordIndex) => (
+        <span className="puzzle-word" key={wordIndex}>
+          {wordPart.split("").map((letter, letterIndex) => {
+            const visible = guessedLetters.includes(letter);
 
-        if (letter === " ") {
-          return (
-            <br/>
-          );
-        }
-
-        const visible = guessedLetters.includes(letter);
-
-        return (
-          <span className="puzzle-letter" key={index}>
-            {visible ? letter : "_"}{" "}
-          </span>
-        );
-      })}
+            return (
+              <span className="puzzle-letter" key={letterIndex}>
+                {visible ? letter : "_"}{" "}
+              </span>
+            );
+          })}
+        </span>
+      ))}
     </div>
   );
 }

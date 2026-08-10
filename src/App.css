@@ -209,6 +209,21 @@ html,
   }
 }
 
+.puzzle-word {
+  display: inline-block;
+  margin: 0 0.5vw;
+}
+
+.puzzle-positioner-helper h1 {
+  color: white;
+  margin: 0;
+}
+
+.game-over-submut-button {
+      font-size: 1.55vw;
+    padding: 0.3vw 0.6vw;
+}
+
 .starting-screen .starting-screen-player {
   display: flex;
   align-items: center;
