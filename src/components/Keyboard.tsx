@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useAudio } from "../components/AudioProvider";
 import beepSound from "../assets/beep-a.ogg";
 
 type KeyboardProps = {
@@ -22,13 +23,19 @@ const letters = [
 
 function Keyboard({ onLetterClick, usedLetters, disabled }: KeyboardProps) {
   const beepSoundRef = useRef<HTMLAudioElement | null>(null);
-  
+ 
+  const { isMuted } = useAudio();
+
   useEffect(() => {
     beepSoundRef.current = new Audio(beepSound);
     beepSoundRef.current.preload = "auto";
   }, []);
 
   function sfxBeep() {
+
+      if(isMuted)
+        return;
+
       if (beepSoundRef.current) {
         beepSoundRef.current.currentTime = 0;
         beepSoundRef.current.play().catch(() => {});
