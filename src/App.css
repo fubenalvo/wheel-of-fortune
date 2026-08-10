@@ -289,7 +289,13 @@ html,
 }
 
 .scoreboard {
-  margin-top: 3vw;
+  margin-top: 3vw; 
+}
+
+@media (max-width: 900px) {
+  .scoreboard {
+    margin-top: 0vw; 
+  }
 }
 
 .scoreboard-table {
@@ -352,10 +358,11 @@ html,
     height: 22%;
     width: 80%;
     left: 10%;
+    bottom: 13%;
   }
 
   .keyboard-letters button {
-    padding: 0.3vw 0.5vw;
+    padding: 0.5vw 0.7vw;
     margin: 0.3vw 0.4vw;
   }
 }

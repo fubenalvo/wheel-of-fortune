@@ -63,12 +63,72 @@ h2 {
   color: var(--text-h);
 }
 
-h1 {
-  color: white;
-  margin: 0;
-  letter-spacing: -0.24px;
-  font-weight: bold;
+/* 1. Definiáljuk a 3 alapvető színváltozót */
+:root {
+  --color-light: #353535;
+  --color-medium: #252525;
+  --color-dark: #191919;
 }
+
+h1.logo {
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  position: relative;
+
+  /* Kezdeti értékek hozzárendelése a rétegekhez */
+  --c1: var(--color-light);
+  --c2: var(--color-medium);
+  --c3: var(--color-dark);
+
+  /* Egyszer írjuk le a text-shadow-t a változókkal */
+  text-shadow:
+    /* Layer 1 (3px offset) */
+    -3px  0px 0 var(--c1),  3px  0px 0 var(--c1),  0px -3px 0 var(--c1),  0px  3px 0 var(--c1),
+    -3px -3px 0 var(--c1),  3px -3px 0 var(--c1), -3px  3px 0 var(--c1),  3px  3px 0 var(--c1),
+
+    /* Layer 2 (6px offset) */
+    -6px  0px 0 var(--c2),  6px  0px 0 var(--c2),  0px -6px 0 var(--c2),  0px  6px 0 var(--c2),
+    -6px -3px 0 var(--c2),  6px -3px 0 var(--c2), -6px  3px 0 var(--c2),  6px  3px 0 var(--c2),
+    -3px -6px 0 var(--c2),  3px -6px 0 var(--c2), -3px  6px 0 var(--c2),  3px  6px 0 var(--c2),
+    -6px -6px 0 var(--c2),  6px -6px 0 var(--c2), -6px  6px 0 var(--c2),  6px  6px 0 var(--c2),
+
+    /* Layer 3 (9px offset) */
+    -9px  0px 0 var(--c3),  9px  0px 0 var(--c3),  0px -9px 0 var(--c3),  0px  9px 0 var(--c3),
+    -9px -3px 0 var(--c3),  9px -3px 0 var(--c3), -9px  3px 0 var(--c3),  9px  3px 0 var(--c3),
+    -3px -9px 0 var(--c3),  3px -9px 0 var(--c3), -3px  9px 0 var(--c3),  3px  9px 0 var(--c3),
+    -9px -6px 0 var(--c3),  9px -6px 0 var(--c3), -9px  6px 0 var(--c3),  9px  6px 0 var(--c3),
+    -6px -9px 0 var(--c3),  6px -9px 0 var(--c3), -6px  9px 0 var(--c3),  6px  9px 0 var(--c3),
+    -9px -9px 0 var(--c3),  9px -9px 0 var(--c3), -9px  9px 0 var(--c3),  9px  9px 0 var(--c3);
+
+  animation: vegas-border 1.0s steps(1) infinite;
+}
+
+/* Az animációban ELÉG CSAK A VÁLTOZÓKAT FELCSERÉLNI! */
+@keyframes vegas-border {
+  0%, 100% {
+    --c1: var(--color-light);
+    --c2: var(--color-medium);
+    --c3: var(--color-dark);
+  }
+  25.00% {
+    --c1: var(--color-medium);
+    --c2: var(--color-light);
+    --c3: var(--color-medium);
+  }
+  50.00% {
+    --c1: var(--color-dark);
+    --c2: var(--color-medium);
+    --c3: var(--color-light);
+  }
+  75.00% {
+    --c1: var(--color-medium);
+    --c2: var(--color-dark);
+    --c3: var(--color-medium);
+  } 
+}
+
 
 h2 {
   color: white;

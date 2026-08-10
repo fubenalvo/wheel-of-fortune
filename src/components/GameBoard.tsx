@@ -169,7 +169,7 @@ function GameBoard() {
       <div className="main-column">
         <div className="main-column-left">
           {gamePhase != "gameOver" && (
-            <h1>Wheel of Fortune</h1>  
+            <h1 className="logo">szerencsekerék</h1>  
           )}
 
           {gamePhase == "starting" && (
